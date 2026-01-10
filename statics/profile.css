@@ -1,0 +1,55 @@
+h1.title {
+  background-image: url('../statics/banner.gif');
+  background-size: cover;
+  background-position: center;
+  padding: 60px 20px 20px 20px;
+  display: block;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.profile-container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.profile-image {
+  flex-shrink: 0;
+}
+
+.profile-image img.pfp {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  object-fit: cover;
+  border: 3px solid #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: block;
+}
+
+.profile-text {
+  flex: 1;
+}
+
+.profile-text p {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.profile-text strong {
+  color: #555;
+}
+
+.profile-text h3.inline-name {
+  display: inline-block;
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
