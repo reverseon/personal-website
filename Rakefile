@@ -3,6 +3,6 @@
 namespace :dev do
   desc "Run the development server"
   task :run do
-    ruby "operations/scripts/dev_renderer.rb"
+    ruby "operations/scripts/dev-server.rb"
   end
 end

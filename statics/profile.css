@@ -38,6 +38,21 @@ h1.title {
   line-height: 1.6;
 }
 
+.profile-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.profile-icon {
+  flex-shrink: 0;
+  min-width: 1.5em;
+}
+
+.profile-content {
+  flex: 1;
+}
+
 .profile-text strong {
   color: #555;
 }
@@ -47,9 +62,152 @@ h1.title {
   margin-top: 0;
 }
 
+.posts-list {
+  margin: 15px 0;
+}
+
+.post-item {
+  display: block;
+  padding: 15px 0;
+  border-bottom: 1px solid #333;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s ease;
+}
+
+.post-item:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-line-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.post-title {
+  margin: 0;
+  font-size: 1.1em;
+  flex: 1;
+}
+
+.post-date {
+  font-size: 0.85em;
+  color: #888;
+  white-space: nowrap;
+}
+
+.post-line-2 {
+  margin: 2px 0 4px 0;
+  color: #aaa;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+.post-line-3 {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.85em;
+  margin-top: 4px;
+}
+
+.meta-label {
+  color: #888;
+  font-size: 0.95em;
+}
+
+.meta-separator {
+  color: #666;
+  margin: 0 4px;
+}
+
+.category-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  margin: 0 4px 0 0;
+  background-color: #2d2d2d;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #ccc;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.category-tag:hover {
+  background-color: #3d3d3d;
+  border-color: #555;
+  color: #fff;
+}
+
+.tag-item {
+  color: #999;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  margin: 0 6px 0 0;
+}
+
+.tag-item:hover {
+  color: #ccc;
+}
+
+.see-more-container {
+  text-align: right;
+  margin: 10px 0 20px 0;
+}
+
+.see-more-link {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: color 0.2s ease;
+}
+
+.see-more-link:hover {
+  color: #ccc;
+}
+
 @media (max-width: 768px) {
   .profile-container {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .profile-image {
+    width: 100%;
+  }
+
+  .profile-image img.pfp {
+    width: 100%;
+  }
+
+  .social-links a {
+    font-size: 1.1rem;
+    padding: 4px 0;
+  }
+
+  .post-line-1 {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .post-date {
+    font-size: 0.8em;
+  }
+
+  .post-title {
+    font-size: 1em;
+  }
+
+  .post-line-3 {
+    font-size: 0.8em;
   }
 }

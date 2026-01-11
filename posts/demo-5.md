@@ -1,7 +1,10 @@
 <!---META
-published_unix: 1767198092
-categories: [Demo, Japanese]
-tags: [Tag1, Tag2, Tag3]
+title: Links and Images
+subtitle: Working with media in markdown
+slug: links-and-images
+published_unix: 1714780800
+categories: [Demo, Media]
+tags: [Links, Images, Media]
 --->
 
 # h1 Heading

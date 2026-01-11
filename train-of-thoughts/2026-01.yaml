@@ -1,0 +1,81 @@
+contents:
+  - content: |
+      Starting 2026 with a fresh perspective. Time to focus on what really matters.
+    ts_unix: 1735689600
+
+  - content: |
+      Been thinking about the nature of software complexity. We often add layers when we should be removing them.
+    ts_unix: 1735776000
+    childs:
+      - content: |
+          This reminds me of Rich Hickey's "Simple Made Easy" talk. Simplicity is about lack of interleaving, not ease of use.
+        ts_unix: 1735862400
+      - content: |
+          The hardest part is recognizing which complexity is essential vs accidental.
+        ts_unix: 1735948800
+
+  - content: |
+      Coffee tastes better when you're not rushing through it.
+    ts_unix: 1736035200
+
+  - content: |
+      Reading through old code I wrote years ago. It's like looking at a different person's work.
+    ts_unix: 1736121600
+    childs:
+      - content: |
+          Found a comment that said "TODO: refactor this mess". Still a mess. Some things never change.
+        ts_unix: 1736208000
+        childs:
+          - content: |
+              Maybe the real mess was the friends we made along the way.
+            ts_unix: 1736294400
+          - content: |
+              Or maybe I should just fix it now instead of commenting about it.
+            ts_unix: 1736380800
+
+  - content: |
+      The best debugging tool is still a good night's sleep.
+    ts_unix: 1736467200
+
+  - content: |
+      Why do we optimize for the wrong things? Spending hours to save milliseconds but wasting days on poor architecture.
+    ts_unix: 1736553600
+    childs:
+      - content: |
+          Premature optimization strikes again. Maybe we should optimize for clarity first.
+        ts_unix: 1736640000
+
+  - content: |
+      Started a new side project today. Let's see if this one makes it past the "weekend experiment" phase.
+    ts_unix: 1736726400
+
+  - content: |
+      Documentation is a love letter to your future self. Write it like you care.
+    ts_unix: 1736812800
+    childs:
+      - content: |
+          Bold of you to assume I love my future self.
+        ts_unix: 1736899200
+        childs:
+          - content: |
+              Fair point. But at least don't actively sabotage them.
+            ts_unix: 1736985600
+
+  - content: |
+      The best code is the code you don't have to write.
+    ts_unix: 1737072000
+
+  - content: |
+      Refactored the build system today. Everything broke. Then everything worked. Then I understood why it broke.
+    ts_unix: 1737158400
+    childs:
+      - content: |
+          The three stages of understanding: confusion, relief, enlightenment.
+        ts_unix: 1737244800
+      - content: |
+          Should have read the docs first. Classic mistake.
+        ts_unix: 1737331200
+        childs:
+          - content: |
+              Docs? What docs? Oh, THOSE docs that were linked in the error message.
+            ts_unix: 1737417600
