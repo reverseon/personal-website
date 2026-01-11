@@ -1,0 +1,27 @@
+<div class="post-item">
+  <a href="/post/<%= post[:slug] %>.html" class="post-link">
+    <div class="post-line-1">
+      <span class="post-title"><%= post[:title] %></span>
+      <span class="post-date"><%= Time.at(post[:published_unix]).strftime('%b %d, %Y') %></span>
+    </div>
+    <% if post[:subtitle] %>
+      <div class="post-line-2"><%= post[:subtitle] %></div>
+    <% end %>
+  </a>
+  <div class="post-line-3">
+    <% if post[:categories].any? %>
+      <div class="post-categories">
+        <% post[:categories].each do |cat| %>
+          <a href="/posts/category/<%= cat.downcase %>/1.html" class="category-tag"><%= cat %></a>
+        <% end %>
+      </div>
+    <% end %>
+    <% if post[:tags].any? %>
+      <div class="post-tags">
+        <% post[:tags].each do |tag| %>
+          <a href="/posts/tag/<%= tag.downcase %>/1.html" class="tag-item">#<%= tag %></a>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

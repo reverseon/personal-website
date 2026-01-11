@@ -1,41 +1,14 @@
 <h2>My Notes</h2>
 <div class="posts-list">
   <% @posts.sort_by { |post| -post[:published_unix] }.first(3).each do |post| %>
-    <a href="#" class="post-item">
-      <div class="post-line-1">
-        <span class="post-title"><%= post[:title] %></span>
-        <span class="post-date"><%= Time.at(post[:published_unix]).strftime('%b %d, %Y') %></span>
-      </div>
-      <% if post[:subtitle] %>
-        <div class="post-line-2"><%= post[:subtitle] %></div>
-      <% end %>
-      <div class="post-line-3">
-        <% if post[:categories].any? %>
-          <span class="post-categories">
-            <% post[:categories].each do |cat| %>
-              <a href="#" class="category-tag"><%= cat %></a>
-            <% end %>
-          </span>
-        <% end %>
-        <% if post[:categories].any? && post[:tags].any? %>
-          <span class="meta-separator"> • </span>
-        <% end %>
-        <% if post[:tags].any? %>
-          <span class="post-tags">
-            <% post[:tags].each do |tag| %>
-              <a href="#" class="tag-item">#<%= tag %></a>
-            <% end %>
-          </span>
-        <% end %>
-      </div>
-    </a>
+    <%= render_partial('_post_item', { post: post }) %>
   <% end %>
 </div>
 <div class="see-more-container">
-  <a href="#" class="see-more-link">See more →</a>
+  <a href="/posts/1.html" class="see-more-link">See more →</a>
 </div>
 
 <h4>Categories</h4>
-<p class="category-list"><%= categories.map.with_index { |cat, i| i == categories.length - 1 ? "<a href=\"#\">#{cat}</a>." : "<a href=\"#\">#{cat}</a>" }.join(', ') %></p>
+<p class="category-list"><%= categories.map.with_index { |cat, i| i == categories.length - 1 ? "<a href=\"/posts/category/#{cat.downcase}/1.html\">#{cat}</a>." : "<a href=\"/posts/category/#{cat.downcase}/1.html\">#{cat}</a>" }.join(', ') %></p>
 <h4>Tags</h4>
-<p class="tag-list"><%= tags.map.with_index { |tag, i| i == tags.length - 1 ? "<a href=\"#\">##{tag}</a>." : "<a href=\"#\">##{tag}</a>" }.join(', ') %></p>
+<p class="tag-list"><%= tags.map.with_index { |tag, i| i == tags.length - 1 ? "<a href=\"/posts/tag/#{tag.downcase}/1.html\">##{tag}</a>." : "<a href=\"/posts/tag/#{tag.downcase}/1.html\">##{tag}</a>" }.join(', ') %></p>

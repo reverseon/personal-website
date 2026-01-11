@@ -1,0 +1,15 @@
+<div class="pagination">
+  <span>Page <%= pagination[:current_page] %> of <%= pagination[:total_pages] %></span>
+  <div class="pagination-nav">
+    <% if pagination[:has_prev] %>
+      <a href="<%= base_url %>/<%= pagination[:current_page] - 1 %>.html">← Previous</a>
+    <% else %>
+      <span class="disabled">← Previous</span>
+    <% end %>
+    <% if pagination[:has_next] %>
+      <a href="<%= base_url %>/<%= pagination[:current_page] + 1 %>.html">Next →</a>
+    <% else %>
+      <span class="disabled">Next →</span>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,149 @@
+/* Post list styles */
+.posts-list {
+  margin: 15px 0;
+}
+
+.post-item {
+  display: block;
+  padding: 15px 0;
+  border-bottom: 1px solid #333;
+  transition: background-color 0.2s ease;
+}
+
+.post-item:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.post-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-line-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.post-title {
+  margin: 0;
+  font-size: 1.1em;
+  flex: 1;
+}
+
+.post-date {
+  font-size: 0.85em;
+  color: #888;
+  white-space: nowrap;
+}
+
+.post-line-2 {
+  margin: 2px 0 4px 0;
+  color: #aaa;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+.post-line-3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.85em;
+  margin-top: 32px;
+}
+
+.post-line-3 > * {
+  flex-shrink: 0;
+}
+
+.meta-label {
+  color: #888;
+  font-size: 0.95em;
+}
+
+
+.post-categories {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  background-color: #2d2d2d;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #ccc;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.category-tag:hover {
+  background-color: #3d3d3d;
+  border-color: #555;
+  color: #fff;
+}
+
+.post-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.tag-item {
+  color: #999;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.tag-item:hover {
+  color: #ccc;
+}
+
+.see-more-container {
+  text-align: right;
+  margin: 10px 0 20px 0;
+}
+
+.see-more-link {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: color 0.2s ease;
+}
+
+.see-more-link:hover {
+  color: #ccc;
+}
+
+/* Responsive styles for post list */
+@media (max-width: 768px) {
+  .post-line-1 {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .post-date {
+    font-size: 0.8em;
+  }
+
+  .post-title {
+    font-size: 1em;
+  }
+
+  .post-line-3 {
+    font-size: 0.8em;
+  }
+}
