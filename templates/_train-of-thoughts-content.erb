@@ -1,0 +1,41 @@
+<%
+  # Set defaults if not provided
+  depth ||= 0
+  max_depth ||= nil  # nil means no limit
+  counter ||= nil
+  max_items ||= nil
+
+  # Increment counter if tracking is enabled
+  counter[:count] += 1 if counter
+
+  # Check initial state
+  has_children = thought[:childs] && !thought[:childs].empty?
+  hit_depth_limit = !max_depth.nil? && depth >= max_depth && has_children
+
+  rendered_children = 0
+  has_more_children = false
+%>
+<div class="thought-item" id="<%= thought[:id] %>" data-timestamp="<%= thought[:ts_unix] %>">
+  <div class="thought-line">
+    <div class="thought-content"><%= thought[:content] %></div>
+    <div class="thought-timestamp"><%= Time.at(thought[:ts_unix]).strftime('%b %d, %Y') %></div>
+  </div>
+  <% if has_children && (max_depth.nil? || depth < max_depth) %>
+  <div class="thought-children">
+    <% thought[:childs].each_with_index do |child, index| %>
+      <% if max_items && counter && counter[:count] >= max_items %>
+        <% has_more_children = true %>
+        <% break %>
+      <% end %>
+      <%= render_partial('_train-of-thoughts-content', { thought: child, depth: depth + 1, max_depth: max_depth, counter: counter, max_items: max_items }) %>
+      <% rendered_children += 1 %>
+    <% end %>
+  </div>
+  <% end %>
+  <% show_more = hit_depth_limit || has_more_children %>
+  <% if show_more %>
+  <div class="thought-more-standalone">
+    <a href="#">More...</a>
+  </div>
+  <% end %>
+</div>

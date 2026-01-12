@@ -1,0 +1,10 @@
+<h2>Train of Thoughts</h2>
+<div class="thoughts-timeline">
+  <% thoughts.first(3).each do |thought| %>
+    <% counter = { count: 0 } %>
+    <%= render_partial('_train-of-thoughts-content', { thought: thought, depth: 0, max_depth: 2, counter: counter, max_items: 3 }) %>
+  <% end %>
+</div>
+<div class="see-more-container">
+  <a href="/carriages/1.html" class="see-more-link">See more →</a>
+</div>

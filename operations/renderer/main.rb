@@ -1,14 +1,20 @@
 require 'erb'
+require 'github/markup'
+require 'yaml'
+require 'digest'
 
 class Renderer
   TEMPLATES_DIR = File.expand_path('../../templates', __dir__)
   POSTS_PER_PAGE = 10
+  THOUGHTS_PER_PAGE = 3
 
-  attr_reader :posts, :categories, :tags
+  attr_reader :posts, :categories, :tags, :thoughts
 
   def initialize
     @posts = []
+    @thoughts = []
     extract_metadata
+    load_train_of_thoughts
   end
 
   def render_partial(partial_name, locals = {})
@@ -25,14 +31,20 @@ class Renderer
   def get_profile_html
     categories = @categories
     tags = @tags
+    thoughts = @thoughts
 
     profile_erb_template = File.read(File.join(TEMPLATES_DIR, 'profile.erb'))
     profile_html = ERB.new(profile_erb_template).result
+
+    train_of_thoughts_erb_template = File.read(File.join(TEMPLATES_DIR, 'home-train-of-thoughts.erb'))
+    train_of_thoughts_html = ERB.new(train_of_thoughts_erb_template).result(binding)
+
     article_list_erb_template = File.read(File.join(TEMPLATES_DIR, 'home-article-list.erb'))
     article_list_html = ERB.new(article_list_erb_template).result(binding)
 
     body_content = <<~BODY
       #{profile_html}
+      #{train_of_thoughts_html}
       #{article_list_html}
     BODY
 
@@ -41,10 +53,12 @@ class Renderer
       title: 'Profile Preview',
       css_files: [
         '/statics/profile.css',
+        '/statics/train-of-thoughts.css',
         '/statics/post-list.css'
       ],
       js_files: [
         '/statics/profile.js',
+        '/statics/train-of-thoughts.js',
         '/statics/post-list.js'
       ]
     )
@@ -95,6 +109,44 @@ class Renderer
     )
   end
 
+  def get_post_by_slug(slug)
+    post = @posts.find { |p| p[:slug] == slug }
+
+    raise "Post not found with slug: '#{slug}'" unless post
+
+    # Read the markdown file
+    markdown_content = File.read(post[:file_path])
+
+    # Remove the metadata block
+    markdown_content = markdown_content.sub(/<!---META\n.*?\n--->\n*/m, '')
+
+    # Render markdown to HTML using github-markup
+    post_html = GitHub::Markup.render(post[:filename], markdown_content)
+
+    # Render the post template
+    post_template = File.read(File.join(TEMPLATES_DIR, 'post.erb'))
+    body_content = ERB.new(post_template).result(binding)
+
+    render_page(
+      body_content,
+      title: post[:title],
+      css_files: ['/statics/post.css'],
+      js_files: ['/statics/post.js']
+    )
+  end
+
+  def get_all_thoughts_list(page: 1, per_page: THOUGHTS_PER_PAGE)
+    paginated_data = paginate(@thoughts, page, per_page)
+
+    render_thoughts_list(
+      thoughts: paginated_data[:items],
+      pagination: paginated_data[:pagination],
+      title: 'Train of Thoughts',
+      heading: 'Train of Thoughts',
+      base_url: '/carriages'
+    )
+  end
+
   private
 
   def paginate(items, page, per_page)
@@ -130,6 +182,18 @@ class Renderer
       title: title,
       css_files: ['/statics/post-list.css'],
       js_files: ['/statics/post-list.js']
+    )
+  end
+
+  def render_thoughts_list(thoughts:, pagination:, title:, heading:, base_url:)
+    thoughts_list_template = File.read(File.join(TEMPLATES_DIR, 'thoughts-list.erb'))
+    body_content = ERB.new(thoughts_list_template).result(binding)
+
+    render_page(
+      body_content,
+      title: title,
+      css_files: ['/statics/train-of-thoughts.css'],
+      js_files: ['/statics/train-of-thoughts.js']
     )
   end
 
@@ -170,6 +234,7 @@ class Renderer
         end
 
         metadata[:file_path] = file_path
+        metadata[:filename] = File.basename(file_path)
 
         # Check for duplicate slug
         if metadata[:slug]
@@ -192,6 +257,8 @@ class Renderer
     css_tags = css_files.map { |href| "<link rel=\"stylesheet\" href=\"#{href}\">" }.join("\n")
     js_tags = js_files.map { |src| "<script src=\"#{src}\"></script>" }.join("\n")
 
+    footer_html = render_partial('_footer')
+
     <<~HTML
       <!DOCTYPE html>
       <html lang="en">
@@ -208,6 +275,7 @@ class Renderer
         <div class="markdown-body-wrapper">
           <article class="markdown-body">
             #{body_content}
+            #{footer_html}
           </article>
         </div>
       </body>
@@ -215,5 +283,39 @@ class Renderer
         #{js_tags}
       </html>
     HTML
+  end
+
+  def load_train_of_thoughts
+    thoughts_dir = File.expand_path('../../train-of-thoughts', __dir__)
+    all_thoughts = []
+
+    Dir.glob(File.join(thoughts_dir, '*.yaml')).sort.reverse.each do |file_path|
+      data = YAML.load_file(file_path)
+      if data && data['contents']
+        all_thoughts.concat(parse_thoughts(data['contents']))
+      end
+    end
+
+    # Sort by timestamp, most recent first
+    @thoughts = all_thoughts.sort_by { |t| -t[:ts_unix] }
+  end
+
+  def parse_thoughts(contents)
+    thoughts = contents.map do |item|
+      thought = {
+        content: item['content'],
+        ts_unix: item['ts_unix'],
+        id: Digest::SHA256.hexdigest("#{item['content']}#{item['ts_unix']}")
+      }
+
+      if item['childs'] && !item['childs'].empty?
+        thought[:childs] = parse_thoughts(item['childs'])
+      end
+
+      thought
+    end
+
+    # Sort by timestamp, most recent first
+    thoughts.sort_by { |t| -t[:ts_unix] }
   end
 end

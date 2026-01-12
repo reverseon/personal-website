@@ -38,6 +38,21 @@ server.mount_proc '/' do |req, res|
     page = $2.to_i
     res.body = renderer.get_tags_post_list(tag, page: page)
 
+  when %r{^/post/([^/]+)\.html$}
+    # Matches: /post/my-blog-post.html
+    slug = $1
+    begin
+      res.body = renderer.get_post_by_slug(slug)
+    rescue => e
+      res.status = 404
+      res.body = "<h1>404 - Post Not Found</h1><p>#{e.message}</p>"
+    end
+
+  when %r{^/carriages/(\d+)\.html$}
+    # Matches: /carriages/1.html, /carriages/2.html, etc.
+    page = $1.to_i
+    res.body = renderer.get_all_thoughts_list(page: page)
+
   else
     res.status = 404
     res.body = '<h1>404 - Not Found</h1>'

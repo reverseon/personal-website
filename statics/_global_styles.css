@@ -68,7 +68,7 @@ body {
   min-width: 200px;
   max-width: 980px;
   margin: 0 auto;
-  padding: 45px;
+  padding: 45px 45px 0;
 }
 
 /* Pagination styles */
@@ -99,4 +99,42 @@ body {
 .pagination .disabled {
   color: #6e7681;
   cursor: not-allowed;
+}
+
+/* Footer styles */
+.site-footer {
+  margin-top: 6rem;
+  padding: 2rem 0;
+  border-top: 1px solid #30363d;
+}
+
+.footer-content {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 45px;
+  text-align: center;
+  color: #8b949e;
+  font-size: 0.875rem;
+}
+
+.footer-content p {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-links a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
 }
