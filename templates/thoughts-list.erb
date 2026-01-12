@@ -3,11 +3,15 @@
 </div>
 
 <h2><%= heading %></h2>
-<div class="thoughts-timeline">
-  <% thoughts.each do |thought| %>
-    <%= render_partial('_train-of-thoughts-content', { thought: thought }) %>
+<% if thoughts.empty? %>
+  <p style="color: #8b949e; font-style: italic; margin: 2rem 0;">No thoughts yet.</p>
+<% else %>
+  <div class="thoughts-timeline">
+    <% thoughts.each do |thought| %>
+      <%= render_partial('_train-of-thoughts-content', { thought: thought }) %>
+    <% end %>
+  </div>
+  <% if pagination[:total_pages] > 1 %>
+    <%= render_partial('_pagination', { pagination: pagination, base_url: base_url }) %>
   <% end %>
-</div>
-<% if pagination[:total_pages] > 1 %>
-  <%= render_partial('_pagination', { pagination: pagination, base_url: base_url }) %>
 <% end %>

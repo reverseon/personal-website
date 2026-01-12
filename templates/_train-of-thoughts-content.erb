@@ -4,6 +4,10 @@
   max_depth ||= nil  # nil means no limit
   counter ||= nil
   max_items ||= nil
+  root_thought_id ||= nil  # Track root thought ID for "More..." link
+
+  # Set root_thought_id if this is depth 0
+  root_thought_id = thought[:id] if depth == 0
 
   # Increment counter if tracking is enabled
   counter[:count] += 1 if counter
@@ -14,11 +18,61 @@
 
   rendered_children = 0
   has_more_children = false
+
+  # Calculate show_more in advance for depth 0
+  show_more = false
+  if depth == 0 && has_children
+    # Check if we'll hit depth limit
+    if !max_depth.nil? && max_depth <= depth
+      show_more = true
+    else
+      # Check if any nested child will be cut off
+      def check_will_truncate(node, current_depth, max_depth, counter, max_items)
+        return false unless node[:childs] && !node[:childs].empty?
+
+        node[:childs].each do |child|
+          # Check if we'll hit max_items
+          if max_items && counter
+            future_count = counter[:count] + 1
+            return true if future_count > max_items
+            counter[:count] += 1
+          end
+
+          # Check if child has children and we'll hit depth limit
+          if child[:childs] && !child[:childs].empty?
+            if !max_depth.nil? && current_depth + 1 >= max_depth
+              return true
+            end
+            # Recursively check nested children
+            return true if check_will_truncate(child, current_depth + 1, max_depth, counter, max_items)
+          end
+        end
+        false
+      end
+
+      # Create a copy of counter for lookahead
+      counter_copy = counter ? { count: counter[:count] } : nil
+      show_more = check_will_truncate(thought, depth, max_depth, counter_copy, max_items)
+    end
+  end
 %>
 <div class="thought-item" id="<%= thought[:id] %>" data-timestamp="<%= thought[:ts_unix] %>">
   <div class="thought-line">
     <div class="thought-content"><%= thought[:content] %></div>
-    <div class="thought-timestamp"><%= Time.at(thought[:ts_unix]).strftime('%b %d, %Y') %></div>
+    <div class="thought-actions">
+      <div class="thought-timestamp"><%= Time.at(thought[:ts_unix]).strftime('%b %d, %Y') %></div>
+      <% if depth == 0 %>
+        <button class="share-thought-btn" data-thought-id="<%= thought[:id] %>" title="Share this thought">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+      <% end %>
+    </div>
   </div>
   <% if has_children && (max_depth.nil? || depth < max_depth) %>
   <div class="thought-children">
@@ -27,15 +81,14 @@
         <% has_more_children = true %>
         <% break %>
       <% end %>
-      <%= render_partial('_train-of-thoughts-content', { thought: child, depth: depth + 1, max_depth: max_depth, counter: counter, max_items: max_items }) %>
+      <%= render_partial('_train-of-thoughts-content', { thought: child, depth: depth + 1, max_depth: max_depth, counter: counter, max_items: max_items, root_thought_id: root_thought_id }) %>
       <% rendered_children += 1 %>
     <% end %>
-  </div>
-  <% end %>
-  <% show_more = hit_depth_limit || has_more_children %>
-  <% if show_more %>
-  <div class="thought-more-standalone">
-    <a href="#">More...</a>
+    <% if depth == 0 && show_more %>
+    <div class="thought-more-standalone">
+        <a href="/carriages/fetcher.html?id=<%= root_thought_id %>">More...</a>
+    </div>
+    <% end %>
   </div>
   <% end %>
 </div>

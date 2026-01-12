@@ -53,6 +53,10 @@ server.mount_proc '/' do |req, res|
     page = $1.to_i
     res.body = renderer.get_all_thoughts_list(page: page)
 
+  when '/carriages/fetcher.html'
+    # Matches: /carriages/fetcher.html?id=xxx
+    res.body = renderer.get_thought_fetcher
+
   else
     res.status = 404
     res.body = '<h1>404 - Not Found</h1>'

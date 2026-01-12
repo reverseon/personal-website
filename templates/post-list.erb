@@ -3,11 +3,15 @@
 </div>
 
 <h2><%= heading %></h2>
-<div class="posts-list">
-  <% posts.each do |post| %>
-    <%= render_partial('_post_item', { post: post }) %>
+<% if posts.empty? %>
+  <p style="color: #8b949e; font-style: italic; margin: 2rem 0;">No posts yet.</p>
+<% else %>
+  <div class="posts-list">
+    <% posts.each do |post| %>
+      <%= render_partial('_post_item', { post: post }) %>
+    <% end %>
+  </div>
+  <% if pagination[:total_pages] > 1 %>
+    <%= render_partial('_pagination', { pagination: pagination, base_url: base_url }) %>
   <% end %>
-</div>
-<% if pagination[:total_pages] > 1 %>
-  <%= render_partial('_pagination', { pagination: pagination, base_url: base_url }) %>
 <% end %>

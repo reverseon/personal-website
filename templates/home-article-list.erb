@@ -1,14 +1,26 @@
 <h2>My Notes</h2>
-<div class="posts-list">
-  <% @posts.sort_by { |post| -post[:published_unix] }.first(3).each do |post| %>
-    <%= render_partial('_post_item', { post: post }) %>
-  <% end %>
-</div>
-<div class="see-more-container">
-  <a href="/posts/1.html" class="see-more-link">See more →</a>
-</div>
+<% if @posts.empty? %>
+  <p style="color: #8b949e; font-style: italic; margin: 2rem 0;">No posts yet.</p>
+<% else %>
+  <div class="posts-list">
+    <% @posts.sort_by { |post| -post[:published_unix] }.first(3).each do |post| %>
+      <%= render_partial('_post_item', { post: post }) %>
+    <% end %>
+  </div>
+  <div class="see-more-container">
+    <a href="/posts/1.html" class="see-more-link">See more →</a>
+  </div>
+<% end %>
 
 <h4>Categories</h4>
-<p class="category-list"><%= categories.map.with_index { |cat, i| i == categories.length - 1 ? "<a href=\"/posts/category/#{cat.downcase}/1.html\">#{cat}</a>." : "<a href=\"/posts/category/#{cat.downcase}/1.html\">#{cat}</a>" }.join(', ') %></p>
+<% if categories.empty? %>
+  <p style="color: #8b949e; font-style: italic;">No categories yet.</p>
+<% else %>
+  <p class="category-list"><%= categories.map.with_index { |cat, i| i == categories.length - 1 ? "<a href=\"/posts/category/#{cat.downcase}/1.html\">#{cat}</a>." : "<a href=\"/posts/category/#{cat.downcase}/1.html\">#{cat}</a>" }.join(', ') %></p>
+<% end %>
 <h4>Tags</h4>
-<p class="tag-list"><%= tags.map.with_index { |tag, i| i == tags.length - 1 ? "<a href=\"/posts/tag/#{tag.downcase}/1.html\">##{tag}</a>." : "<a href=\"/posts/tag/#{tag.downcase}/1.html\">##{tag}</a>" }.join(', ') %></p>
+<% if tags.empty? %>
+  <p style="color: #8b949e; font-style: italic;">No tags yet.</p>
+<% else %>
+  <p class="tag-list"><%= tags.map.with_index { |tag, i| i == tags.length - 1 ? "<a href=\"/posts/tag/#{tag.downcase}/1.html\">##{tag}</a>." : "<a href=\"/posts/tag/#{tag.downcase}/1.html\">##{tag}</a>" }.join(', ') %></p>
+<% end %>

@@ -2,11 +2,12 @@ require 'erb'
 require 'github/markup'
 require 'yaml'
 require 'digest'
+require 'json'
 
 class Renderer
   TEMPLATES_DIR = File.expand_path('../../templates', __dir__)
   POSTS_PER_PAGE = 10
-  THOUGHTS_PER_PAGE = 3
+  FLATTENED_THOUGHTS_PER_PAGE = 50
 
   attr_reader :posts, :categories, :tags, :thoughts
 
@@ -50,7 +51,8 @@ class Renderer
 
     render_page(
       body_content,
-      title: 'Profile Preview',
+      title: 'ReverseON',
+      description: 'Personal blog my short bio, some notes, and my train of thoughts.',
       css_files: [
         '/statics/profile.css',
         '/statics/train-of-thoughts.css',
@@ -72,6 +74,7 @@ class Renderer
       posts: paginated_data[:items],
       pagination: paginated_data[:pagination],
       title: 'All Posts',
+      description: 'Browse all blog posts covering various topics and insights.',
       heading: 'All Posts',
       base_url: '/posts'
     )
@@ -88,6 +91,7 @@ class Renderer
       posts: paginated_data[:items],
       pagination: paginated_data[:pagination],
       title: "Category: #{category}",
+      description: "Browse all posts in the #{category} category.",
       heading: "Posts in Category: #{category}",
       base_url: "/posts/category/#{category}"
     )
@@ -104,6 +108,7 @@ class Renderer
       posts: paginated_data[:items],
       pagination: paginated_data[:pagination],
       title: "Tag: ##{tag}",
+      description: "Browse all posts tagged with ##{tag}.",
       heading: "Posts tagged with ##{tag}",
       base_url: "/posts/tag/#{tag}"
     )
@@ -130,20 +135,41 @@ class Renderer
     render_page(
       body_content,
       title: post[:title],
+      description: post[:subtitle] || post[:title],
       css_files: ['/statics/post.css'],
       js_files: ['/statics/post.js']
     )
   end
 
-  def get_all_thoughts_list(page: 1, per_page: THOUGHTS_PER_PAGE)
-    paginated_data = paginate(@thoughts, page, per_page)
+  def get_all_thoughts_list(page: 1, per_page: FLATTENED_THOUGHTS_PER_PAGE)
+    paginated_data = paginate_thoughts(@thoughts, page, per_page)
 
     render_thoughts_list(
       thoughts: paginated_data[:items],
       pagination: paginated_data[:pagination],
       title: 'Train of Thoughts',
+      description: 'Explore my train of thoughts - a collection of ideas and reflections.',
       heading: 'Train of Thoughts',
       base_url: '/carriages'
+    )
+  end
+
+  def get_thought_fetcher
+    # Build the thought location map for all thoughts
+    page_map = build_thought_page_map(@thoughts, FLATTENED_THOUGHTS_PER_PAGE)
+
+    # Build a map of thought_id => page_number
+    thought_page_map = build_thought_id_to_page_map(page_map[:thoughts_by_page])
+
+    fetcher_template = File.read(File.join(TEMPLATES_DIR, 'thought-fetcher.erb'))
+    body_content = ERB.new(fetcher_template).result(binding)
+
+    render_page(
+      body_content,
+      title: 'Redirecting to Thought...',
+      description: 'Finding and redirecting to the specific thought in the train of thoughts.',
+      css_files: ['/statics/thought-fetcher.css'],
+      js_files: ['/statics/thought-fetcher.js']
     )
   end
 
@@ -173,25 +199,118 @@ class Renderer
     }
   end
 
-  def render_post_list(posts:, pagination:, title:, heading:, base_url:)
+  def paginate_thoughts(thoughts, page, per_page)
+    page = [page.to_i, 1].max
+
+    # Build page mapping: assign each root thought to a page based on flattened count
+    page_map = build_thought_page_map(thoughts, per_page)
+
+    total_items = page_map[:total_count]
+    total_pages = page_map[:total_pages]
+
+    page = [page, total_pages].min
+
+    # Get thoughts for this page
+    paginated_thoughts = page_map[:thoughts_by_page][page] || []
+
+    {
+      items: paginated_thoughts,
+      pagination: {
+        current_page: page,
+        total_pages: total_pages,
+        per_page: per_page,
+        total_items: total_items,
+        has_prev: page > 1,
+        has_next: page < total_pages
+      }
+    }
+  end
+
+  def build_thought_page_map(thoughts, per_page)
+    thoughts_by_page = {}
+    current_page = 1
+    page_count = 0
+    total_count = 0
+
+    thoughts.each do |thought|
+      # Count this thought and all its children
+      thought_count = count_thought_tree(thought)
+
+      # Start a new page only if current page already has met/exceeded limit
+      if page_count >= per_page && page_count > 0
+        current_page += 1
+        page_count = 0
+      end
+
+      # Add thought to current page
+      thoughts_by_page[current_page] ||= []
+      thoughts_by_page[current_page] << thought
+
+      # Update counters
+      page_count += thought_count
+      total_count += thought_count
+    end
+
+    {
+      thoughts_by_page: thoughts_by_page,
+      total_count: total_count,
+      total_pages: current_page
+    }
+  end
+
+  def count_thought_tree(thought)
+    count = 1
+    if thought[:childs] && !thought[:childs].empty?
+      thought[:childs].each do |child|
+        count += count_thought_tree(child)
+      end
+    end
+    count
+  end
+
+  def build_thought_id_to_page_map(thoughts_by_page)
+    id_to_page = {}
+
+    thoughts_by_page.each do |page, thoughts|
+      thoughts.each do |thought|
+        collect_thought_ids(thought, page, id_to_page)
+      end
+    end
+
+    id_to_page
+  end
+
+  def collect_thought_ids(thought, page, id_to_page)
+    id_to_page[thought[:id]] = page
+
+    if thought[:childs] && !thought[:childs].empty?
+      thought[:childs].each do |child|
+        collect_thought_ids(child, page, id_to_page)
+      end
+    end
+  end
+
+  def render_post_list(posts:, pagination:, title:, description:, heading:, base_url:)
     post_list_template = File.read(File.join(TEMPLATES_DIR, 'post-list.erb'))
     body_content = ERB.new(post_list_template).result(binding)
 
     render_page(
       body_content,
       title: title,
+      description: description,
       css_files: ['/statics/post-list.css'],
       js_files: ['/statics/post-list.js']
     )
   end
 
-  def render_thoughts_list(thoughts:, pagination:, title:, heading:, base_url:)
+  def render_thoughts_list(thoughts:, pagination:, title:, description:, heading:, base_url:)
     thoughts_list_template = File.read(File.join(TEMPLATES_DIR, 'thoughts-list.erb'))
     body_content = ERB.new(thoughts_list_template).result(binding)
 
     render_page(
       body_content,
       title: title,
+      description: description,
       css_files: ['/statics/train-of-thoughts.css'],
       js_files: ['/statics/train-of-thoughts.js']
     )
@@ -253,11 +372,13 @@ class Renderer
     @tags = all_tags.uniq.sort
   end
 
-  def render_page(body_content, title: 'Page', css_files: [], js_files: [])
+  def render_page(body_content, title: 'Page', description: '', css_files: [], js_files: [])
     css_tags = css_files.map { |href| "<link rel=\"stylesheet\" href=\"#{href}\">" }.join("\n")
     js_tags = js_files.map { |src| "<script src=\"#{src}\"></script>" }.join("\n")
 
     footer_html = render_partial('_footer')
+
+    description_tag = description.empty? ? '' : "<meta name=\"description\" content=\"#{description}\">"
 
     <<~HTML
       <!DOCTYPE html>
@@ -266,6 +387,7 @@ class Renderer
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>#{title}</title>
+        #{description_tag}
         <link rel="icon" href="/statics/favicon.svg" type="image/svg+xml">
         <link rel="stylesheet" href="/statics/_global_styles.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-dark.css">
@@ -292,15 +414,15 @@ class Renderer
     Dir.glob(File.join(thoughts_dir, '*.yaml')).sort.reverse.each do |file_path|
       data = YAML.load_file(file_path)
       if data && data['contents']
-        all_thoughts.concat(parse_thoughts(data['contents']))
+        all_thoughts.concat(parse_thoughts(data['contents'], is_root: true))
       end
     end
 
-    # Sort by timestamp, most recent first
+    # Sort by timestamp, most recent first (root level only)
     @thoughts = all_thoughts.sort_by { |t| -t[:ts_unix] }
   end
 
-  def parse_thoughts(contents)
+  def parse_thoughts(contents, is_root: false)
     thoughts = contents.map do |item|
       thought = {
         content: item['content'],
@@ -309,13 +431,14 @@ class Renderer
       }
 
       if item['childs'] && !item['childs'].empty?
-        thought[:childs] = parse_thoughts(item['childs'])
+        # Children are always sorted oldest first
+        thought[:childs] = parse_thoughts(item['childs'], is_root: false)
       end
 
       thought
     end
 
-    # Sort by timestamp, most recent first
-    thoughts.sort_by { |t| -t[:ts_unix] }
+    # Only sort newest first if this is root level, otherwise keep oldest first
+    is_root ? thoughts.sort_by { |t| -t[:ts_unix] } : thoughts.sort_by { |t| t[:ts_unix] }
   end
 end
