@@ -7,9 +7,11 @@
       <%= render_partial('_post_item', { post: post }) %>
     <% end %>
   </div>
-  <div class="see-more-container">
-    <a href="/posts/1.html" class="see-more-link">See more →</a>
-  </div>
+  <% if @posts.length > 3 %>
+    <div class="see-more-container">
+      <a href="/posts/1.html" class="see-more-link">See more →</a>
+    </div>
+  <% end %>
 <% end %>
 
 <h4>Categories</h4>
