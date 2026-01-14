@@ -71,6 +71,12 @@ body {
   padding: 45px 45px 0;
 }
 
+@media (max-width: 768px) {
+  .markdown-body-wrapper {
+    padding: 24px 16px 0;
+  }
+}
+
 /* Pagination styles */
 .pagination {
   display: flex;
