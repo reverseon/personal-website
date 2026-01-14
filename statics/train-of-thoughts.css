@@ -38,16 +38,16 @@
 }
 
 .share-thought-btn {
-  background: none;
-  border: none;
+  background: rgba(139, 148, 158, 0.1);
+  border: 1px solid rgba(139, 148, 158, 0.3);
+  border-radius: 6px;
   color: #8b949e;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.4rem 0.5rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s ease;
-  opacity: 0.7;
+  transition: all 0.2s ease;
 }
 
 .share-thought-btn svg {
@@ -57,7 +57,8 @@
 
 .share-thought-btn:hover {
   color: #58a6ff;
-  opacity: 1;
+  background: rgba(88, 166, 255, 0.15);
+  border-color: rgba(88, 166, 255, 0.4);
 }
 
 .share-thought-btn:active {
@@ -129,6 +130,11 @@
   .thought-line {
     flex-direction: column;
     gap: 3px;
+  }
+
+  .thought-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .thought-children {

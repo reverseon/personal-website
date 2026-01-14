@@ -138,3 +138,17 @@ body {
 .footer-links a:hover {
   text-decoration: underline;
 }
+
+/* Hash highlight animation */
+@keyframes hash-highlight-fade {
+  0% {
+    background-color: rgba(88, 166, 255, 0.3);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.hash-highlight {
+  animation: hash-highlight-fade 1.5s cubic-bezier(0.1, 0, 0.9, 0.2) forwards;
+}

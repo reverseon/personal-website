@@ -6,16 +6,17 @@ require 'json'
 
 class Renderer
   TEMPLATES_DIR = File.expand_path('../../templates', __dir__)
-  POSTS_PER_PAGE = 10
-  FLATTENED_THOUGHTS_PER_PAGE = 50
+  POSTS_PER_PAGE = 5
+  FLATTENED_THOUGHTS_PER_PAGE = 150
 
-  attr_reader :posts, :categories, :tags, :thoughts
+  attr_reader :posts, :categories, :tags, :thoughts, :total_posts_pages, :total_thoughts_pages
 
   def initialize
     @posts = []
     @thoughts = []
     extract_metadata
     load_train_of_thoughts
+    calculate_total_pages
   end
 
   def render_partial(partial_name, locals = {})
@@ -59,7 +60,6 @@ class Renderer
         '/statics/post-list.css'
       ],
       js_files: [
-        '/statics/profile.js',
         '/statics/train-of-thoughts.js',
         '/statics/post-list.js'
       ]
@@ -136,8 +136,7 @@ class Renderer
       body_content,
       title: post[:title],
       description: post[:subtitle] || post[:title],
-      css_files: ['/statics/post.css'],
-      js_files: ['/statics/post.js']
+      css_files: ['/statics/post.css']
     )
   end
 
@@ -170,6 +169,45 @@ class Renderer
       description: 'Finding and redirecting to the specific thought in the train of thoughts.',
       css_files: ['/statics/thought-fetcher.css'],
       js_files: ['/statics/thought-fetcher.js']
+    )
+  end
+
+  def get_error_html
+    body_content = <<~HTML
+      <div class="error-page">
+        <h1 class="error-title">Error</h1>
+        <p class="error-message">Something went wrong.</p>
+        <a class="error-link" href="/">Go back to home</a>
+      </div>
+      <style>
+        .error-page {
+          text-align: center;
+          padding: 4rem 2rem;
+        }
+        .error-title {
+          font-size: 3rem;
+          color: #c9d1d9;
+          margin-bottom: 1rem;
+        }
+        .error-message {
+          font-size: 1.25rem;
+          color: #8b949e;
+          margin-bottom: 2rem;
+        }
+        .error-link {
+          color: #58a6ff;
+          text-decoration: none;
+        }
+        .error-link:hover {
+          text-decoration: underline;
+        }
+      </style>
+    HTML
+
+    render_page(
+      body_content,
+      title: 'Error',
+      description: 'An error occurred.'
     )
   end
 
@@ -400,9 +438,9 @@ class Renderer
             #{footer_html}
           </article>
         </div>
-      </body>
         <script src="/statics/_global_scripts.js"></script>
         #{js_tags}
+      </body>
       </html>
     HTML
   end
@@ -440,5 +478,15 @@ class Renderer
 
     # Only sort newest first if this is root level, otherwise keep oldest first
     is_root ? thoughts.sort_by { |t| -t[:ts_unix] } : thoughts.sort_by { |t| t[:ts_unix] }
+  end
+
+  def calculate_total_pages
+    # Calculate total pages for posts
+    total_posts = @posts.length
+    @total_posts_pages = total_posts > 0 ? (total_posts.to_f / POSTS_PER_PAGE).ceil : 1
+
+    # Calculate total pages for thoughts
+    page_map = build_thought_page_map(@thoughts, FLATTENED_THOUGHTS_PER_PAGE)
+    @total_thoughts_pages = page_map[:total_pages]
   end
 end

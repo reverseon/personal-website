@@ -45,7 +45,7 @@ server.mount_proc '/' do |req, res|
       res.body = renderer.get_post_by_slug(slug)
     rescue => e
       res.status = 404
-      res.body = "<h1>404 - Post Not Found</h1><p>#{e.message}</p>"
+      res.body = renderer.get_error_html
     end
 
   when %r{^/carriages/(\d+)\.html$}
@@ -59,7 +59,7 @@ server.mount_proc '/' do |req, res|
 
   else
     res.status = 404
-    res.body = '<h1>404 - Not Found</h1>'
+    res.body = renderer.get_error_html
   end
 end
 
