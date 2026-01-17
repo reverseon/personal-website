@@ -6,3 +6,14 @@ contents:
       - content: |
           What a nice time to be alive!
         ts_unix: 1768413056
+  - content: |
+      I am trying to watch The Shiunji Family Children (紫雲寺家の子供たち) right now after clusterfuck that is Kanokari
+    ts_unix: 1768496356
+    childs:
+      - content: |
+          Wow. Seiha is a really nice character, the way she speaks and everything. she's just... damn 😳
+        ts_unix: 1768496665
+      - content: |
+          omw to practice writing 紫雲寺清葉
+        ts_unix: 1768497138
+

@@ -3,6 +3,7 @@
 namespace :dev do
   desc "Run the development server"
   task :run do
+    ENV['SITE_INTENDED_DOMAIN'] = 'http://localhost:3000'
     ruby "operations/scripts/dev-server.rb"
   end
 end
@@ -12,6 +13,8 @@ namespace :test do
 
   desc "Build HTML and serve with nginx in Docker on localhost:3001"
   task :'build-and-deploy' do
+    ENV['SITE_INTENDED_DOMAIN'] = 'http://localhost:3001'
+
     # Build the static HTML
     puts "Building static HTML..."
     ruby "operations/scripts/build-html.rb"
@@ -49,8 +52,11 @@ end
 namespace :prod do
   desc "Build HTML and deploy to S3 bucket (requires ishiori1gp AWS profile)"
   task :'build-and-deploy' do
+    ENV['SITE_INTENDED_DOMAIN'] = 'https://reon.my.id'
+
     s3_bucket = "reverseon-personal-website-bucket"
     aws_profile = "ishiori1gp"
+    cloudfront_distribution_id = "E2M5ULEYEB0Z2G"
 
     # Verify AWS credentials
     puts "Verifying AWS credentials for profile '#{aws_profile}'..."
@@ -69,6 +75,12 @@ namespace :prod do
     puts "\nDeploying to S3 bucket: #{s3_bucket}..."
     unless system("aws --profile #{aws_profile} s3 sync #{build_dir} s3://#{s3_bucket} --delete")
       abort "Error: Failed to sync to S3"
+    end
+
+    # Invalidate CloudFront cache
+    puts "\nInvalidating CloudFront cache..."
+    unless system("aws --profile #{aws_profile} cloudfront create-invalidation --distribution-id #{cloudfront_distribution_id} --paths '/*'")
+      abort "Error: Failed to invalidate CloudFront cache"
     end
 
     puts "\nDeployment complete!"

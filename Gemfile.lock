@@ -1,7 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    commonmarker (0.23.12)
+    commonmarker (1.1.5-aarch64-linux)
+    commonmarker (1.1.5-x86_64-linux)
     date (3.5.1)
     erb (6.0.1)
     github-markup (5.0.1)
@@ -22,14 +23,15 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  commonmarker (~> 0.23.0)
+  commonmarker (~> 1.0)
   github-markup (~> 5.0)
   rake (~> 13.0)
   rdoc (~> 7.0)
   webrick (~> 1.9)
 
 CHECKSUMS
-  commonmarker (0.23.12) sha256=da2d2f89c7c7b51c42c6e69ace3ab5df39497683f86e83aca7087c671d523ccd
+  commonmarker (1.1.5-aarch64-linux) sha256=0b2313c892000a8977d5ddf1677518281120d8a5f933c8165794e089fad8699b
+  commonmarker (1.1.5-x86_64-linux) sha256=3e369ccaa811003b1a235e21d022bfc557c0a9ae4d58de088775e25411c97953
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   erb (6.0.1) sha256=28ecdd99c5472aebd5674d6061e3c6b0a45c049578b071e5a52c2a7f13c197e5
   github-markup (5.0.1) sha256=b6e9f8538cb8566935321433190615cbc747550e1705a7af5ba24048d0ddc472

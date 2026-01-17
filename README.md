@@ -64,12 +64,14 @@ title: Post Title
 subtitle: Optional subtitle
 slug: url-friendly-slug
 published_unix: 1234567890
+image_preview: /statics/media/image.png
 categories: [Category1, Category2]
 tags: [tag1, tag2]
 --->
 
 # Markdown content here
 ```
+- `image_preview` is optional and used for OpenGraph/Twitter card images
 
 **Train of Thoughts (`train-of-thoughts/*.yaml`)**
 YAML files (named by date, e.g., `2026-01.yaml`) with hierarchical structure:
@@ -103,8 +105,10 @@ Templates access variables directly from the Renderer's binding. Use `render_par
 
 ### Static Assets (`statics/`)
 
-- `_global_styles.css`, `_global_scripts.js` - Included on every page
-- Page-specific CSS/JS files (e.g., `post.css`, `train-of-thoughts.js`)
+- `assets/` - CSS and JavaScript files
+  - `_global_styles.css`, `_global_scripts.js` - Included on every page
+  - Page-specific CSS/JS files (e.g., `post.css`, `post.js`, `train-of-thoughts.js`)
+- `media/` - Images and other media files (e.g., `profile.png`, `favicon.svg`)
 - Files are copied as-is to build output
 
 ### URL Structure
@@ -143,7 +147,25 @@ The `render_page` method wraps body content in a complete HTML document with:
 - Global CSS (including GitHub markdown styles from CDN)
 - Page-specific CSS/JS files
 - Footer partial
-- SEO meta tags (description)
+- SEO meta tags (description, OpenGraph, Twitter cards)
+
+### Custom Markdown Syntax
+The renderer supports custom comment-style syntax that gets converted to HTML:
+
+**Ruby Annotations** (furigana for Japanese text):
+```
+RUBY{漢字|かん.じ}
+```
+- Converts to `<ruby>` elements with readings above each character
+- Dot-separated readings map to each base character
+- Wrapped in `<span class="rg">` for grouped hover behavior
+
+**Translator's Notes**:
+```
+<!--TLN Your note here -->
+```
+- Converts to `<aside class="tln-footnote">` elements
+- Supports multiline notes
 
 ## Dependencies
 

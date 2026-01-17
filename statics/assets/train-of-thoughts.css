@@ -24,6 +24,14 @@
   flex: 1;
 }
 
+.thought-content img {
+  max-width: 400px;
+  height: auto;
+  display: block;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+}
+
 .thought-actions {
   display: flex;
   align-items: center;
@@ -153,5 +161,9 @@
 
   .thought-timestamp {
     font-size: 0.8em;
+  }
+
+  .thought-content img {
+    max-width: 100%;
   }
 }

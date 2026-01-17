@@ -6,7 +6,7 @@ source "https://rubygems.org"
 
 gem "github-markup", "~> 5.0"
 
-gem "commonmarker", "~> 0.23.0"
+gem "commonmarker", "~> 1.0"
 
 gem "rdoc", "~> 7.0"
 

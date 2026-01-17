@@ -1,5 +1,6 @@
 require 'erb'
 require 'github/markup'
+require 'commonmarker'
 require 'yaml'
 require 'digest'
 require 'json'
@@ -8,6 +9,7 @@ class Renderer
   TEMPLATES_DIR = File.expand_path('../../templates', __dir__)
   POSTS_PER_PAGE = 5
   FLATTENED_THOUGHTS_PER_PAGE = 150
+  SITE_DOMAIN = ENV.fetch('SITE_INTENDED_DOMAIN', 'http://localhost:3000')
 
   attr_reader :posts, :categories, :tags, :thoughts, :total_posts_pages, :total_thoughts_pages
 
@@ -52,16 +54,17 @@ class Renderer
 
     render_page(
       body_content,
-      title: 'ReverseON',
-      description: 'Personal blog my short bio, some notes, and my train of thoughts.',
+      title: 'ReverseON - Thirafi Najwan Kurniatama',
+      description: 'Personal blog with my short bio, some notes, and my train of thoughts.',
+      image: '/statics/media/profile.png',
       css_files: [
-        '/statics/profile.css',
-        '/statics/train-of-thoughts.css',
-        '/statics/post-list.css'
+        '/statics/assets/profile.css',
+        '/statics/assets/train-of-thoughts.css',
+        '/statics/assets/post-list.css'
       ],
       js_files: [
-        '/statics/train-of-thoughts.js',
-        '/statics/post-list.js'
+        '/statics/assets/train-of-thoughts.js',
+        '/statics/assets/post-list.js'
       ]
     )
   end
@@ -125,19 +128,41 @@ class Renderer
     # Remove the metadata block
     markdown_content = markdown_content.sub(/<!---META\n.*?\n--->\n*/m, '')
 
-    # Render markdown to HTML using github-markup
-    post_html = GitHub::Markup.render(post[:filename], markdown_content)
+    # Render markdown to HTML using CommonMarker with GitHub-flavored extensions
+    # post_html = GitHub::Markup.render(post[:filename], markdown_content)
+    post_html = Commonmarker.to_html(
+      markdown_content,
+      options: {
+        render: {
+          unsafe: true,
+          github_pre_lang: true,
+          hardbreaks: true
+        },
+        extension: {
+          autolink: true,
+          strikethrough: true,
+          table: true,
+          tasklist: true,
+          tagfilter: true,
+          footnotes: true,
+          header_ids: ""
+        }
+      }
+    )
 
     # Render the post template
     post_template = File.read(File.join(TEMPLATES_DIR, 'post.erb'))
     body_content = ERB.new(post_template).result(binding)
 
-    render_page(
-      body_content,
+    render_opts = {
       title: post[:title],
       description: post[:subtitle] || post[:title],
-      css_files: ['/statics/post.css']
-    )
+      css_files: ['/statics/assets/post.css'],
+      js_files: ['/statics/assets/post.js']
+    }
+    render_opts[:image] = post[:image_preview] if post[:image_preview]
+
+    render_page(body_content, **render_opts)
   end
 
   def get_all_thoughts_list(page: 1, per_page: FLATTENED_THOUGHTS_PER_PAGE)
@@ -167,8 +192,8 @@ class Renderer
       body_content,
       title: 'Redirecting to Thought...',
       description: 'Finding and redirecting to the specific thought in the train of thoughts.',
-      css_files: ['/statics/thought-fetcher.css'],
-      js_files: ['/statics/thought-fetcher.js']
+      css_files: ['/statics/assets/thought-fetcher.css'],
+      js_files: ['/statics/assets/thought-fetcher.js']
     )
   end
 
@@ -336,8 +361,8 @@ class Renderer
       body_content,
       title: title,
       description: description,
-      css_files: ['/statics/post-list.css'],
-      js_files: ['/statics/post-list.js']
+      css_files: ['/statics/assets/post-list.css'],
+      js_files: ['/statics/assets/post-list.js']
     )
   end
 
@@ -349,8 +374,8 @@ class Renderer
       body_content,
       title: title,
       description: description,
-      css_files: ['/statics/train-of-thoughts.css'],
-      js_files: ['/statics/train-of-thoughts.js']
+      css_files: ['/statics/assets/train-of-thoughts.css'],
+      js_files: ['/statics/assets/train-of-thoughts.js']
     )
   end
 
@@ -373,6 +398,7 @@ class Renderer
         metadata[:subtitle] = $1.strip if metadata_text =~ /subtitle:\s*(.+)/ # optional
         metadata[:slug] = $1.strip if metadata_text =~ /slug:\s*(.+)/
         metadata[:published_unix] = $1.strip.to_i if metadata_text =~ /published_unix:\s*(\d+)/
+        metadata[:image_preview] = $1.strip if metadata_text =~ /image_preview:\s*(.+)/ # optional
 
         # Extract categories
         if metadata_text =~ /categories:\s*\[(.*?)\]/
@@ -410,15 +436,19 @@ class Renderer
     @tags = all_tags.uniq.sort
   end
 
-  def render_page(body_content, title: 'Page', description: '', css_files: [], js_files: [])
+  def render_page(body_content, title: 'Page', description: '', image: '/statics/assets/favicon.png', css_files: [], js_files: [])
     css_tags = css_files.map { |href| "<link rel=\"stylesheet\" href=\"#{href}\">" }.join("\n")
     js_tags = js_files.map { |src| "<script src=\"#{src}\"></script>" }.join("\n")
 
     footer_html = render_partial('_footer')
 
-    description_tag = description.empty? ? '' : "<meta name=\"description\" content=\"#{description}\">"
+    absolute_image = "#{SITE_DOMAIN}#{image}"
 
-    <<~HTML
+    description_tag = description.empty? ? '' : "<meta name=\"description\" content=\"#{description}\">"
+    og_description_tag = description.empty? ? '' : "<meta property=\"og:description\" content=\"#{description}\">"
+    twitter_description_tag = description.empty? ? '' : "<meta name=\"twitter:description\" content=\"#{description}\">"
+
+    html = <<~HTML
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -426,8 +456,18 @@ class Renderer
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>#{title}</title>
         #{description_tag}
-        <link rel="icon" href="/statics/favicon.svg" type="image/svg+xml">
-        <link rel="stylesheet" href="/statics/_global_styles.css">
+        <!-- OpenGraph -->
+        <meta property="og:title" content="#{title}">
+        #{og_description_tag}
+        <meta property="og:image" content="#{absolute_image}">
+        <meta property="og:type" content="website">
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="#{title}">
+        #{twitter_description_tag}
+        <meta name="twitter:image" content="#{absolute_image}">
+        <link rel="icon" href="/statics/assets/favicon.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="/statics/assets/_global_styles.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-dark.css">
         #{css_tags}
       </head>
@@ -438,11 +478,13 @@ class Renderer
             #{footer_html}
           </article>
         </div>
-        <script src="/statics/_global_scripts.js"></script>
+        <script src="/statics/assets/_global_scripts.js"></script>
         #{js_tags}
       </body>
       </html>
     HTML
+
+    convert_custom_comments(html)
   end
 
   def load_train_of_thoughts
@@ -488,5 +530,40 @@ class Renderer
     # Calculate total pages for thoughts
     page_map = build_thought_page_map(@thoughts, FLATTENED_THOUGHTS_PER_PAGE)
     @total_thoughts_pages = page_map[:total_pages]
+  end
+
+  # Convert custom comment syntax to HTML elements
+  # Ruby annotations: RUBY{漢字|かん.じ} becomes <span class="rg"><ruby>漢<rt>かん</rt></ruby><ruby>字<rt>じ</rt></ruby></span>
+  # Each dot in the reading separates annotations per base character
+  # The .rg (ruby-group) wrapper allows hovering to reveal all readings at once
+  # TLN (Translator's Note): <!--TLN note text --> becomes a footnote-style element
+  def convert_custom_comments(html)
+    # Ruby annotation pattern: RUBY{base|reading.reading.reading}
+    html = html.gsub(/RUBY\{([^|{}]+)\|([^{}]+)\}/) do |match|
+      base_text = $1
+      readings = $2.split('.')
+      base_chars = base_text.chars
+
+      ruby_content = if base_chars.length == readings.length
+        # One reading per character
+        base_chars.zip(readings).map do |char, reading|
+          "<ruby>#{char}<rt>#{reading}</rt></ruby>"
+        end.join
+      else
+        # Mismatch: wrap entire base with joined readings
+        "<ruby>#{base_text}<rt>#{readings.join}</rt></ruby>"
+      end
+
+      "<span class=\"rg\">#{ruby_content}</span>"
+    end
+
+    # TLN pattern: <!--TLN note text --> becomes a footnote-style element
+    # Using /m flag to allow matching across multiple lines
+    html = html.gsub(/<!--TLN\s+(.+?)\s*-->/m) do |match|
+      note_text = $1.gsub(/\n/, '<br>')
+      "<aside class=\"tln-footnote\"><span class=\"tln-label\">TLN:</span> #{note_text}</aside>"
+    end
+
+    html
   end
 end
