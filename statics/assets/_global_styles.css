@@ -171,6 +171,7 @@ rt {
   margin-bottom: 0.2em;
   opacity: 0;
   transition: opacity 0.2s ease;
+  user-select: none;
 }
 
 /* Hovering the ruby-group reveals all rt elements inside */

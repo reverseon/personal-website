@@ -16,7 +16,8 @@ def load_renderer
   Renderer.new
 end
 
-server = WEBrick::HTTPServer.new(Port: PORT)
+bind_address = ENV.fetch('SITE_BIND', '127.0.0.1')
+server = WEBrick::HTTPServer.new(Port: PORT, BindAddress: bind_address)
 
 server.mount '/statics', WEBrick::HTTPServlet::FileHandler, STATICS_PATH
 
@@ -74,7 +75,7 @@ end
 
 trap('INT') { server.shutdown }
 
-puts "Server starting on http://localhost:#{PORT}"
+puts "Server starting on http://#{bind_address}:#{PORT}"
 puts "Serving static files from: #{STATICS_PATH}"
 puts "Press Ctrl+C to stop"
 

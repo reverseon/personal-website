@@ -4,6 +4,7 @@ namespace :dev do
   desc "Run the development server"
   task :run do
     ENV['SITE_INTENDED_DOMAIN'] = 'http://localhost:3000'
+    ENV['SITE_BIND'] = '0.0.0.0'
     ruby "operations/scripts/dev-server.rb"
   end
 end
@@ -40,12 +41,12 @@ namespace :test do
     nginx_conf_path = File.join(build_dir, 'nginx.conf')
     File.write(nginx_conf_path, nginx_config)
 
-    puts "\nStarting nginx in Docker on http://localhost:3001"
+    puts "\nStarting nginx in Docker on http://0.0.0.0:3001"
     puts "Serving from: #{build_dir}"
     puts "Press Ctrl+C to stop"
 
-    # Run nginx in Docker with custom config
-    exec "docker run --rm -p 3001:80 -v #{build_dir}:/usr/share/nginx/html:ro -v #{nginx_conf_path}:/etc/nginx/conf.d/default.conf:ro nginx:alpine"
+    # Run nginx in Docker with custom config (bind host port on all interfaces)
+    exec "docker run --rm -p 0.0.0.0:3001:80 -v #{build_dir}:/usr/share/nginx/html:ro -v #{nginx_conf_path}:/etc/nginx/conf.d/default.conf:ro nginx:alpine"
   end
 end
 
