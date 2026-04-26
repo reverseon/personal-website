@@ -3,7 +3,7 @@ module HtmlFormatter
   # Ruby annotations: RUBY{漢字|かん.じ} becomes <span class="rg"><ruby>漢<rt>かん</rt></ruby><ruby>字<rt>じ</rt></ruby></span>
   # Each dot in the reading separates annotations per base character
   # The .rg (ruby-group) wrapper allows hovering to reveal all readings at once
-  # TLN (Translator's Note): <!--TLN note text --> becomes a footnote-style element
+  # Footnote: <!--Footnote note text --> becomes a footnote-style element
   def self.convert_custom_comments(html)
     # Ruby annotation pattern: RUBY{base|reading.reading.reading}
     html = html.gsub(/RUBY\{([^|{}]+)\|([^{}]+)\}/) do |match|
@@ -24,11 +24,11 @@ module HtmlFormatter
       "<span class=\"rg\">#{ruby_content}</span>"
     end
 
-    # TLN pattern: <!--TLN note text --> becomes a footnote-style element
+    # Footnote pattern: <!--Footnote note text --> becomes a footnote-style element
     # Using /m flag to allow matching across multiple lines
-    html = html.gsub(/<!--TLN\s+(.+?)\s*-->/m) do |match|
+    html = html.gsub(/<!--Footnote\s+(.+?)\s*-->/m) do |match|
       note_text = $1.gsub(/\n/, '<br>')
-      "<aside class=\"tln-footnote\"><span class=\"tln-label\">TLN:</span> #{note_text}</aside>"
+      "<aside class=\"footnote\"><span class=\"footnote-label\">Note:</span> #{note_text}</aside>"
     end
 
     html

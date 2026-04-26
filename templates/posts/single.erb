@@ -21,14 +21,14 @@
     <% unless post[:categories].empty? %>
       <div class="post-categories">
         <% post[:categories].each do |category| %>
-          <span class="category"><%= category %></span>
+          <a href="/posts/category/<%= category.downcase %>/1.html" class="category"><%= category %></a>
         <% end %>
       </div>
     <% end %>
     <% unless post[:tags].empty? %>
       <div class="post-tags">
         <% post[:tags].each do |tag| %>
-          <span class="tag">#<%= tag %></span>
+          <a href="/posts/tag/<%= tag.downcase %>/1.html" class="tag">#<%= tag %></a>
         <% end %>
       </div>
     <% end %>

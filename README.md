@@ -165,11 +165,11 @@ RUBY{漢字|かん.じ}
 - Dot-separated readings map to each base character
 - Wrapped in `<span class="rg">` for grouped hover behavior
 
-**Translator's Notes**:
+**Footnotes**:
 ```
-<!--TLN Your note here -->
+<!--Footnote Your note here -->
 ```
-- Converts to `<aside class="tln-footnote">` elements
+- Converts to `<aside class="footnote">` elements
 - Supports multiline notes
 
 ## Dependencies
