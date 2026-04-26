@@ -18,7 +18,9 @@
 <% if categories.empty? %>
   <p style="color: #8b949e; font-style: italic;">No categories yet.</p>
 <% else %>
-  <p class="category-list"><%= categories.map.with_index { |cat, i| i == categories.length - 1 ? "<a href=\"/posts/category/#{cat.downcase}/1.html\">#{cat}</a>." : "<a href=\"/posts/category/#{cat.downcase}/1.html\">#{cat}</a>" }.join(', ') %></p>
+  <div class="category-list pill-cloud">
+    <%= categories.map { |cat| "<a href=\"/posts/category/#{cat.downcase}/1.html\" class=\"pill-link category-tag\">#{cat}</a>" }.join("\n") %>
+  </div>
 <% end %>
 <h4>Tags</h4>
 <% if tags.empty? %>

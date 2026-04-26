@@ -12,7 +12,7 @@
     <% if post[:categories].any? %>
       <div class="post-categories">
         <% post[:categories].each do |cat| %>
-          <a href="/posts/category/<%= cat.downcase %>/1.html" class="category-tag"><%= cat %></a>
+          <a href="/posts/category/<%= cat.downcase %>/1.html" class="pill-link category-tag"><%= cat %></a>
         <% end %>
       </div>
     <% end %>
