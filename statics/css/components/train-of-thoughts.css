@@ -12,8 +12,13 @@
 .thought-line {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-start;
   gap: 10px;
+}
+
+.thought-content-wrapper {
+  flex: 1;
+  min-width: 0;
 }
 
 .thought-content {
@@ -21,7 +26,6 @@
   font-size: 0.95rem;
   line-height: 1.6;
   white-space: pre-wrap;
-  flex: 1;
 }
 
 .thought-content img {
@@ -32,17 +36,10 @@
   border-radius: 8px;
 }
 
-.thought-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-}
-
 .thought-timestamp {
   color: #888;
   font-size: 0.85em;
-  white-space: nowrap;
+  margin-top: 0.3rem;
 }
 
 .share-thought-btn {
@@ -51,7 +48,9 @@
   border-radius: 6px;
   color: #8b949e;
   cursor: pointer;
-  padding: 0.4rem 0.5rem;
+  padding: 0.5rem 0.6rem;
+  min-width: 36px;
+  min-height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -135,23 +134,13 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .thought-line {
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  .thought-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
   .thought-children {
-    margin-left: 0.5rem;
-    padding-left: 1rem;
+    margin-left: 0.25rem;
+    padding-left: 0.75rem;
   }
 
   .thought-children .thought-item::before {
-    left: -1rem;
+    left: -0.75rem;
     width: 0.5rem;
   }
 
@@ -165,5 +154,11 @@
 
   .thought-content img {
     max-width: 100%;
+  }
+
+  .share-thought-btn {
+    padding: 0.6rem 0.8rem;
+    min-width: 44px;
+    min-height: 44px;
   }
 }

@@ -42,7 +42,7 @@ module ThoughtRenderer
       title: title,
       description: description,
       css_files: ['/statics/css/components/train-of-thoughts.css'],
-      js_files: ['/statics/js/components/train-of-thoughts.js']
+      js_files: ['/statics/js/components/share-btn.js', '/statics/js/components/train-of-thoughts.js']
     )
   end
 end

@@ -30,6 +30,7 @@ module ProfileRenderer
         '/statics/css/components/post-list.css'
       ],
       js_files: [
+        '/statics/js/components/share-btn.js',
         '/statics/js/components/train-of-thoughts.js',
         '/statics/js/components/post-list.js'
       ]

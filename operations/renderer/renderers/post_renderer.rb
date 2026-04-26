@@ -87,7 +87,7 @@ module PostRenderer
       title: post[:title],
       description: post[:subtitle] || post[:title],
       css_files: ['/statics/css/components/post.css'],
-      js_files: ['/statics/js/components/post.js']
+      js_files: ['/statics/js/components/share-btn.js', '/statics/js/components/post.js']
     }
     render_opts[:image] = post[:image_preview] if post[:image_preview]
 

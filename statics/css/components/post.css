@@ -20,7 +20,9 @@
   border-radius: 6px;
   color: #8b949e;
   cursor: pointer;
-  padding: 0.4rem 0.5rem;
+  padding: 0.5rem 0.6rem;
+  min-width: 36px;
+  min-height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
