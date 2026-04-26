@@ -1,11 +1,22 @@
 h1.title {
-  background-image: url('/statics/media/banner.gif');
-  background-size: cover;
-  background-position: center;
-  padding: 60px 20px 20px 20px;
+  margin: 0 0 24px 0;
   display: block;
   width: 100%;
-  border-radius: 5px;
+  position: relative;
+  padding-bottom: 10px;
+  font-weight: 800;
+  color: #e6edf3;
+}
+
+h1.title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background-color: #58a6ff;
+  border-radius: 2px;
 }
 
 .profile-container {
@@ -17,6 +28,7 @@ h1.title {
 
 .profile-image {
   flex-shrink: 0;
+  width: 150px;
 }
 
 .profile-image img.pfp {
@@ -42,11 +54,27 @@ h1.title {
   display: flex;
   gap: 0.75rem;
   align-items: flex-start;
+  padding: 6px 10px;
+  margin-left: -10px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.profile-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .profile-icon {
   flex-shrink: 0;
-  min-width: 1.5em;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  font-size: 0.9em;
 }
 
 .profile-content {
@@ -62,22 +90,71 @@ h1.title {
   margin-top: 0;
 }
 
+.social-links {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.social-links span {
+  display: none; /* Hide the text separator | */
+}
+
+.social-links a {
+  display: inline-block;
+  padding: 6px 16px;
+  background-color: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 20px;
+  color: #c9d1d9;
+  text-decoration: none;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.social-links a:hover {
+  background-color: #30363d;
+  border-color: #8b949e;
+  color: #ffffff;
+  text-decoration: none;
+}
+
 @media (max-width: 768px) {
   .profile-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 15px;
   }
 
   .profile-image {
-    width: 100%;
+    width: 150px;
+    margin: 0;
   }
 
   .profile-image img.pfp {
     width: 100%;
   }
 
-  .social-links a {
-    font-size: 1.1rem;
-    padding: 4px 0;
+  .profile-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-text > div {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .profile-item {
+    align-self: flex-start;
+    width: 100%;
+  }
+
+  .social-links {
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
   }
 }
