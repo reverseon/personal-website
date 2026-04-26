@@ -81,7 +81,7 @@
         <% has_more_children = true %>
         <% break %>
       <% end %>
-      <%= render_partial('_train-of-thoughts-content', { thought: child, depth: depth + 1, max_depth: max_depth, counter: counter, max_items: max_items, root_thought_id: root_thought_id }) %>
+      <%= render_partial('thoughts/_content', { thought: child, depth: depth + 1, max_depth: max_depth, counter: counter, max_items: max_items, root_thought_id: root_thought_id }) %>
       <% rendered_children += 1 %>
     <% end %>
     <% if depth == 0 && show_more %>

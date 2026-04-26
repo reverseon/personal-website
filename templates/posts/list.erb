@@ -8,10 +8,10 @@
 <% else %>
   <div class="posts-list">
     <% posts.each do |post| %>
-      <%= render_partial('_post_item', { post: post }) %>
+      <%= render_partial('posts/_item', { post: post }) %>
     <% end %>
   </div>
   <% if pagination[:total_pages] > 1 %>
-    <%= render_partial('_pagination', { pagination: pagination, base_url: base_url }) %>
+    <%= render_partial('shared/_pagination', { pagination: pagination, base_url: base_url }) %>
   <% end %>
 <% end %>

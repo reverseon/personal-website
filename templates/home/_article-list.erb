@@ -4,7 +4,7 @@
 <% else %>
   <div class="posts-list">
     <% @posts.sort_by { |post| -post[:published_unix] }.first(3).each do |post| %>
-      <%= render_partial('_post_item', { post: post }) %>
+      <%= render_partial('posts/_item', { post: post }) %>
     <% end %>
   </div>
   <% if @posts.length > 3 %>

@@ -1,1 +1,5 @@
 build/
+
+# Ignore demo content
+posts/**/*demo*
+train-of-thoughts/**/*demo*

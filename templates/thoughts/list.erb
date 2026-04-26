@@ -8,10 +8,10 @@
 <% else %>
   <div class="thoughts-timeline">
     <% thoughts.each do |thought| %>
-      <%= render_partial('_train-of-thoughts-content', { thought: thought }) %>
+      <%= render_partial('thoughts/_content', { thought: thought }) %>
     <% end %>
   </div>
   <% if pagination[:total_pages] > 1 %>
-    <%= render_partial('_pagination', { pagination: pagination, base_url: base_url }) %>
+    <%= render_partial('shared/_pagination', { pagination: pagination, base_url: base_url }) %>
   <% end %>
 <% end %>

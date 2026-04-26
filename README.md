@@ -105,10 +105,15 @@ Templates access variables directly from the Renderer's binding. Use `render_par
 
 ### Static Assets (`statics/`)
 
-- `assets/` - CSS and JavaScript files
-  - `_global_styles.css`, `_global_scripts.js` - Included on every page
-  - Page-specific CSS/JS files (e.g., `post.css`, `post.js`, `train-of-thoughts.js`)
-- `media/` - Images and other media files (e.g., `profile.png`, `favicon.svg`)
+- `css/` - Cascading Style Sheets
+  - `global/` - Global styles applied to every page (e.g., `main.css`)
+  - `components/` - Component-specific styles included only when needed (e.g., `post.css`, `train-of-thoughts.css`)
+- `js/` - JavaScript files
+  - `global/` - Global scripts applied to every page (e.g., `main.js`)
+  - `components/` - Component-specific scripts (e.g., `post.js`)
+- `media/` - Images and other media files
+  - `icons/` - Site icons (e.g., `favicon.svg`, `favicon.png`)
+  - Other media files (e.g., `profile.png`)
 - Files are copied as-is to build output
 
 ### URL Structure
