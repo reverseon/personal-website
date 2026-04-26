@@ -5,7 +5,7 @@ require 'uri'
 require 'github/markup'
 require_relative '../renderer/main'
 
-PORT = 3000
+PORT = ENV.fetch('PORT', 3000).to_i
 STATICS_PATH = File.expand_path('../../statics', __dir__)
 RENDERER_PATH = File.expand_path('../renderer/main.rb', __dir__)
 
@@ -28,7 +28,7 @@ server.mount_proc '/' do |req, res|
   res['Content-Type'] = 'text/html'
 
   case path
-  when '/'
+  when '/', '/index.html'
     res.body = renderer.get_profile_html
 
   when %r{^/posts/(\d+)\.html$}
@@ -66,6 +66,11 @@ server.mount_proc '/' do |req, res|
   when '/carriages/fetcher.html'
     # Matches: /carriages/fetcher.html?id=xxx
     res.body = renderer.get_thought_fetcher
+
+  when %r{^/thought/([^/]+)\.html$}
+    # Matches: /thought/xxx.html
+    id = $1
+    res.body = renderer.get_thought_by_id(id)
 
   else
     res.status = 404

@@ -7,7 +7,7 @@
     const thoughtId = shareBtn.dataset.thoughtId;
     if (!thoughtId) return;
 
-    const fetcherUrl = `${window.location.origin}/carriages/fetcher.html?id=${thoughtId}`;
-    window.ShareBtn.handleShare(shareBtn, fetcherUrl);
+    const shareUrl = `${window.location.origin}/thought/${thoughtId}.html`;
+    window.ShareBtn.handleShare(shareBtn, shareUrl);
   });
 })();

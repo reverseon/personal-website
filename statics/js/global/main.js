@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const offset = 50;
         const top = target.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top: top, behavior: 'smooth' });
-        target.classList.add('hash-highlight');
       }, 100);
     }
   }

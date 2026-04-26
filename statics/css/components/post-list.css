@@ -118,24 +118,7 @@
 }
 
 .see-more-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3em;
-  color: #8b949e;
-  text-decoration: none;
-  font-size: 0.8rem;
-  padding: 0.2rem 0.6rem;
-  border: 1px solid rgba(139, 148, 158, 0.25);
-  border-radius: 20px;
-  background: rgba(139, 148, 158, 0.07);
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-
-.see-more-link:hover {
-  color: #58a6ff;
-  border-color: rgba(88, 166, 255, 0.4);
-  background: rgba(88, 166, 255, 0.08);
-  text-decoration: none;
+  /* Inherits styles from .pill-link in global.css */
 }
 
 /* Responsive styles for post list */

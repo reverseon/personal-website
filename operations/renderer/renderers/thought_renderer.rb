@@ -31,7 +31,34 @@ module ThoughtRenderer
     )
   end
 
+  def get_thought_by_id(id)
+    thought = find_thought_recursive(@thoughts, id)
+    return get_error_html if thought.nil?
+
+    individual_template = File.read(File.join(Renderer::TEMPLATES_DIR, 'thoughts/individual.erb'))
+    body_content = ERB.new(individual_template).result(binding)
+
+    render_page(
+      body_content,
+      title: "Thought | ReverseON",
+      description: thought[:content][0..160],
+      css_files: ['/statics/css/components/train-of-thoughts.css'],
+      js_files: ['/statics/js/components/share-btn.js', '/statics/js/components/train-of-thoughts.js']
+    )
+  end
+
   private
+
+  def find_thought_recursive(thoughts, id)
+    thoughts.each do |thought|
+      return thought if thought[:id] == id
+      if thought[:childs]
+        found = find_thought_recursive(thought[:childs], id)
+        return found if found
+      end
+    end
+    nil
+  end
 
   def render_thoughts_list(thoughts:, pagination:, title:, description:, heading:, base_url:)
     thoughts_list_template = File.read(File.join(Renderer::TEMPLATES_DIR, 'thoughts/list.erb'))
