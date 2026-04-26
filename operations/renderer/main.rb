@@ -20,7 +20,7 @@ class Renderer
 
   TEMPLATES_DIR = File.expand_path('../../templates', __dir__)
   POSTS_PER_PAGE = 5
-  FLATTENED_THOUGHTS_PER_PAGE = 150
+  FLATTENED_THOUGHTS_PER_PAGE = 10
   SITE_DOMAIN = ENV.fetch('SITE_INTENDED_DOMAIN', 'http://localhost:3000')
 
   attr_reader :posts, :categories, :tags, :thoughts, :total_posts_pages, :total_thoughts_pages

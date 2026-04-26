@@ -107,7 +107,6 @@ h1.title::after {
   border: 1px solid #30363d;
   border-radius: 20px;
   color: #c9d1d9;
-  text-decoration: none;
   font-size: 0.9em;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -117,7 +116,6 @@ h1.title::after {
   background-color: #30363d;
   border-color: #8b949e;
   color: #ffffff;
-  text-decoration: none;
 }
 
 @media (max-width: 768px) {
