@@ -78,8 +78,12 @@ class Renderer
         #{twitter_description_tag}
         <meta name="twitter:image" content="#{absolute_image}">
         <link rel="icon" href="/statics/media/icons/favicon.svg" type="image/svg+xml">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/statics/css/global/main.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-dark.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
         #{css_tags}
       </head>
       <body>
@@ -89,6 +93,12 @@ class Renderer
             #{footer_html}
           </article>
         </div>
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+          });
+        </script>
         <script src="/statics/js/global/main.js"></script>
         #{js_tags}
       </body>
