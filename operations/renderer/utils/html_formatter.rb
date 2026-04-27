@@ -40,4 +40,20 @@ module HtmlFormatter
 
     html
   end
+
+  # Strip custom annotations for plain text usage (e.g. meta descriptions)
+  def self.strip_custom_annotations(text)
+    return "" if text.nil?
+    
+    # Strip RUBY{base|reading} -> base
+    text = text.gsub(/RUBY\{([^|{}]+)\|([^{}]+)\}/, '\1')
+    
+    # Strip TOOLTIP{message|target} -> target
+    text = text.gsub(/TOOLTIP\{([^|{}]+)\|([^{}]+)\}/, '\2')
+    
+    # Strip <!--Footnote text --> -> ""
+    text = text.gsub(/<!--Footnote\s+(.+?)\s*-->/m, '')
+    
+    text
+  end
 end

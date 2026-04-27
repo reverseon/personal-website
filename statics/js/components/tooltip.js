@@ -21,7 +21,8 @@
 
     box.style.left = `${left}px`;
     box.style.top = `${top}px`;
-    box.style.transform = `translateX(-50%) translateY(-100%)`;
+    // We remove the inline transform and let CSS handle the translateX(-50%) and animations
+    box.style.transform = ''; 
 
     // Boundary detection: check if the tooltip is bleeding out of the viewport
     // We need to wait for the next frame or force a layout to get the correct boxRect

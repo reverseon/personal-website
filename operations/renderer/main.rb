@@ -85,9 +85,15 @@ class Renderer
 
     absolute_image = image.start_with?('http') ? image : "#{SITE_DOMAIN}#{image}"
 
-    description_tag = description.empty? ? '' : "<meta name=\"description\" content=\"#{description}\">"
-    og_description_tag = description.empty? ? '' : "<meta property=\"og:description\" content=\"#{description}\">"
-    twitter_description_tag = description.empty? ? '' : "<meta name=\"twitter:description\" content=\"#{description}\">"
+    # Clean up description for meta tags (strip custom annotations and HTML)
+    clean_description = HtmlFormatter.strip_custom_annotations(description)
+      .gsub(/<[^>]*>/, '') # Strip any existing HTML tags
+      .gsub(/\s+/, ' ')    # Normalize whitespace
+      .strip
+
+    description_tag = clean_description.empty? ? '' : "<meta name=\"description\" content=\"#{clean_description}\">"
+    og_description_tag = clean_description.empty? ? '' : "<meta property=\"og:description\" content=\"#{clean_description}\">"
+    twitter_description_tag = clean_description.empty? ? '' : "<meta name=\"twitter:description\" content=\"#{clean_description}\">"
 
     html = <<~HTML
       <!DOCTYPE html>
