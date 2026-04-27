@@ -1,5 +1,5 @@
 <div class="top-nav">
-  <a href="/#train-of-thoughts" class="back-link">
+  <a href="/#train-of-thoughts" class="nav-link nav-link--prev">
     <i data-lucide="arrow-left"></i>
     Back to Home
   </a>
@@ -9,9 +9,8 @@
   <%= render_partial('thoughts/_content', { thought: thought }) %>
   
   <div style="text-align: right; margin-top: 0.5rem;">
-    <a href="/carriages/fetcher.html?id=<%= thought[:id] %>" class="pill-link">
-      See Other Thoughts
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    <a href="/carriages/fetcher.html?id=<%= thought[:id] %>" class="nav-link nav-link--next">
+      See Other Thoughts <i data-lucide="arrow-right"></i>
     </a>
   </div>
 </div>

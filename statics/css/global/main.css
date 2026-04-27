@@ -103,23 +103,59 @@ body {
   border-top: 1px solid #30363d;
 }
 
-.pagination-nav {
-  display: flex;
-  gap: 1rem;
-}
-
-.pagination a {
+/* Navigation Links (Shared component for Back links, Pagination, etc.) */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   color: #58a6ff;
-  text-decoration: none;
+  text-decoration: none !important;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.pagination a:hover {
-  text-decoration: underline;
+.nav-link:hover {
+  color: #79c0ff;
+  text-decoration: none !important;
 }
 
-.pagination .disabled {
+.nav-link--prev:hover {
+  transform: translateX(-4px);
+}
+
+.nav-link--next:hover {
+  transform: translateX(4px);
+}
+
+.nav-link.disabled {
   color: #6e7681;
   cursor: not-allowed;
+  transform: none !important;
+}
+
+.nav-link [data-lucide],
+.nav-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Pagination styles */
+.pagination {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #30363d;
+}
+
+.pagination-nav {
+  display: flex;
+  gap: 1.5rem;
 }
 
 /* Top navigation (Back to Home, etc.) */
@@ -128,30 +164,6 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2rem;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: #58a6ff;
-  text-decoration: none;
-  font-family: var(--font-heading);
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.back-link:hover {
-  text-decoration: none;
-  transform: translateX(-4px);
-  color: #79c0ff;
-}
-
-.back-link [data-lucide],
-.back-link svg {
-  width: 16px;
-  height: 16px;
 }
 
 /* Footer styles */

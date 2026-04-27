@@ -4,7 +4,9 @@ module ErrorRenderer
       <div class="error-page">
         <h1 class="error-title">Error</h1>
         <p class="error-message">Something went wrong.</p>
-        <a class="error-link" href="/">Go back to home</a>
+        <a class="nav-link nav-link--prev" href="/">
+          <i data-lucide="arrow-left"></i> Go back to home
+        </a>
       </div>
       <style>
         .error-page {
@@ -20,13 +22,6 @@ module ErrorRenderer
           font-size: 1.25rem;
           color: #8b949e;
           margin-bottom: 2rem;
-        }
-        .error-link {
-          color: #58a6ff;
-          text-decoration: none;
-        }
-        .error-link:hover {
-          text-decoration: underline;
         }
       </style>
     HTML
