@@ -1,0 +1,16 @@
+<h2 id="thought">Train of Thoughts</h2>
+<% if thoughts.empty? %>
+  <p style="color: #8b949e; font-style: italic; margin: 2rem 0;">No thoughts yet.</p>
+<% else %>
+  <div class="thoughts-timeline">
+    <% thoughts.first(3).each do |thought| %>
+      <% counter = { count: 0 } %>
+      <%= render_partial('thoughts/_content', { thought: thought, depth: 0, max_depth: 2, counter: counter, max_items: 3 }) %>
+    <% end %>
+  </div>
+  <% if thoughts.length > 3 %>
+    <div class="see-more-container">
+      <a href="/carriages/1.html" class="nav-link nav-link--next">See more thoughts <i data-lucide="arrow-right"></i></a>
+    </div>
+  <% end %>
+<% end %>

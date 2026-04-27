@@ -78,6 +78,23 @@ puts "Building thought fetcher page..."
 html = renderer.get_thought_fetcher
 File.write(File.join(BUILD_DIR, 'carriages', 'fetcher.html'), html)
 
+# Build individual thought pages
+puts "Building individual thoughts..."
+FileUtils.mkdir_p(File.join(BUILD_DIR, 'thought'))
+
+def build_thought_recursively(thoughts, renderer, build_dir)
+  thoughts.each do |thought|
+    html = renderer.get_thought_by_id(thought[:id])
+    File.write(File.join(build_dir, 'thought', "#{thought[:id]}.html"), html)
+
+    if thought[:childs] && !thought[:childs].empty?
+      build_thought_recursively(thought[:childs], renderer, build_dir)
+    end
+  end
+end
+
+build_thought_recursively(renderer.thoughts, renderer, BUILD_DIR)
+
 # Build error page
 puts "Building error page..."
 File.write(File.join(BUILD_DIR, 'error.html'), renderer.get_error_html)

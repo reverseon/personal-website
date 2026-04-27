@@ -1,0 +1,16 @@
+<div class="top-nav">
+  <a href="/#thought" class="nav-link nav-link--prev">
+    <i data-lucide="arrow-left"></i>
+    Back to Home
+  </a>
+</div>
+
+<div class="thoughts-timeline">
+  <%= render_partial('thoughts/_content', { thought: thought }) %>
+  
+  <div style="text-align: right; margin-top: 0.5rem;">
+    <a href="/carriages/fetcher.html?id=<%= thought[:id] %>" class="nav-link nav-link--next">
+      See Other Thoughts <i data-lucide="arrow-right"></i>
+    </a>
+  </div>
+</div>

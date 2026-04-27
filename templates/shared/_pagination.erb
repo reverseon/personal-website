@@ -1,0 +1,23 @@
+<div class="pagination">
+  <span>Page <%= pagination[:current_page] %> of <%= pagination[:total_pages] %></span>
+  <div class="pagination-nav">
+    <% if pagination[:has_prev] %>
+      <a href="<%= base_url %>/<%= pagination[:current_page] - 1 %>.html" class="nav-link nav-link--prev">
+        <i data-lucide="arrow-left"></i> Previous
+      </a>
+    <% else %>
+      <span class="nav-link disabled">
+        <i data-lucide="arrow-left"></i> Previous
+      </span>
+    <% end %>
+    <% if pagination[:has_next] %>
+      <a href="<%= base_url %>/<%= pagination[:current_page] + 1 %>.html" class="nav-link nav-link--next">
+        Next <i data-lucide="arrow-right"></i>
+      </a>
+    <% else %>
+      <span class="nav-link disabled">
+        Next <i data-lucide="arrow-right"></i>
+      </span>
+    <% end %>
+  </div>
+</div>

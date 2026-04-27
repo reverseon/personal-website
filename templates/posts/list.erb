@@ -1,0 +1,20 @@
+<div class="top-nav">
+  <a href="/#post" class="nav-link nav-link--prev">
+    <i data-lucide="arrow-left"></i>
+    Back to Home
+  </a>
+</div>
+
+<h2><%= heading %></h2>
+<% if posts.empty? %>
+  <p style="color: #8b949e; font-style: italic; margin: 2rem 0;">No posts yet.</p>
+<% else %>
+  <div class="posts-list">
+    <% posts.each do |post| %>
+      <%= render_partial('posts/_item', { post: post }) %>
+    <% end %>
+  </div>
+  <% if pagination[:total_pages] > 1 %>
+    <%= render_partial('shared/_pagination', { pagination: pagination, base_url: base_url }) %>
+  <% end %>
+<% end %>
