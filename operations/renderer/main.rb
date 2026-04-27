@@ -47,6 +47,29 @@ class Renderer
     ERB.new(partial_content).result(b)
   end
 
+  def render_markdown(text)
+    return '' if text.nil?
+    Commonmarker.to_html(
+      text,
+      options: {
+        render: {
+          unsafe: true,
+          github_pre_lang: true,
+          hardbreaks: true
+        },
+        extension: {
+          autolink: true,
+          strikethrough: true,
+          table: true,
+          tasklist: true,
+          tagfilter: true,
+          footnotes: true,
+          header_ids: ""
+        }
+      }
+    )
+  end
+
   def render_page(body_content, title: 'Page', description: '', image: '/statics/media/icons/favicon.png', css_files: [], js_files: [])
     css_tags = css_files.map { |href| "<link rel=\"stylesheet\" href=\"#{href}\">" }.join("\n")
     js_tags = js_files.map { |src| "<script src=\"#{src}\"></script>" }.join("\n")

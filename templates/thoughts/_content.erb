@@ -56,10 +56,11 @@
     end
   end
 %>
-<div class="thought-item" id="<%= thought[:id] %>" data-timestamp="<%= thought[:ts_unix] %>">
+<div class="thought-item <%= has_children ? 'has-children' : '' %>" id="<%= thought[:id] %>" data-timestamp="<%= thought[:ts_unix] %>" data-depth="<%= depth %>">
   <div class="thought-line">
+    <div class="thought-marker"></div>
     <div class="thought-content-wrapper">
-      <div class="thought-content"><%= thought[:content] %></div>
+      <div class="thought-content"><%= render_markdown(thought[:content]) %></div>
       <div class="thought-timestamp"><%= Time.at(thought[:ts_unix]).strftime('%b %d, %Y') %></div>
     </div>
     <% if depth == 0 %>
