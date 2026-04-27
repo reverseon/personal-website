@@ -73,10 +73,10 @@ tags: [tag1, tag2]
 
 # Markdown content here
 ```
-- `image_preview` is optional and used for OpenGraph/Twitter card images.
+- `image_preview` is optional and used for OpenGraph/Twitter card images. If not provided, the renderer automatically extracts the first image found in the post content as a fallback.
 
 **Train of Thoughts (`train-of-thoughts/*.yaml`)**
-YAML files (named by date, e.g., `2026-01.yaml`) with hierarchical structure:
+YAML files (named by date, e.g., `2026-01.yaml`) with hierarchical structure. The `content` field supports full Markdown syntax, including images and links.
 ```yaml
 contents:
   - content: |
@@ -107,11 +107,12 @@ Templates access variables directly from the Renderer's binding. Use `render_par
 
 ### Design & Aesthetics
 
-The site uses a premium, modern design system:
+The site uses a clean, modern design system:
 - **Typography**: Space Grotesk for headings and Inter for body text, providing a sleek, professional look.
 - **Icons**: Integration with **Lucide** icons for consistent and interactive visual elements.
+- **Socials**: Connected via **GitHub**, **LinkedIn**, and **Instagram** with custom hover states.
 - **Interactivity**: 
-  - Smooth transitions and hover effects.
+  - Smooth transitions and interactive hover effects.
   - Floating toast notifications for actions like copying share links.
   - Responsive layout optimized for both desktop and mobile.
 
@@ -129,7 +130,7 @@ The site uses a premium, modern design system:
 
 ### URL Structure
 
-- `/` - Home page (profile + recent thoughts + recent posts).
+- `/` - Home page (profile + recent thoughts + recent posts). Supports anchor navigation (e.g., `/#thought`, `/#post`).
 - `/posts/{page}.html` - All posts, paginated.
 - `/posts/category/{category}/{page}.html` - Posts by category.
 - `/posts/tag/{tag}/{page}.html` - Posts by tag.

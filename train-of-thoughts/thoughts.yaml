@@ -20,3 +20,12 @@ contents:
       Are we deadass 🥀🥀
       ![](/statics/media/usd-idr-whatttt.png)
     ts_unix: 1782748097
+  - content: |
+      I was under the impression that the term 愛してる comes from the verb 愛する. 
+      Apparently it was from 愛す all along?
+    ts_unix: 1782751697
+    childs:
+      - content: |
+          Now it makes sense why the potential form is 愛せる instead of 愛できる.
+        ts_unix: 1782751700
+    
