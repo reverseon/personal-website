@@ -14,4 +14,16 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 100);
     }
   }
+
+  // Back to top smooth scroll
+  const backToTop = document.querySelector('.back-to-top');
+  if (backToTop) {
+    backToTop.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
 });

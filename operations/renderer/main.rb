@@ -90,8 +90,8 @@ class Renderer
         <div class="markdown-body-wrapper">
           <article class="markdown-body">
             #{body_content}
-            #{footer_html}
           </article>
+          #{footer_html}
         </div>
         <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
         <script>

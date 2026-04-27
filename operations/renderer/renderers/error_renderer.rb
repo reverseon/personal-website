@@ -4,7 +4,7 @@ module ErrorRenderer
       <div class="error-page">
         <h1 class="error-title">Error</h1>
         <p class="error-message">Something went wrong.</p>
-        <a class="nav-link nav-link--prev" href="/">
+        <a class="nav-link nav-link--prev" href="/#">
           <i data-lucide="arrow-left"></i> Go back to home
         </a>
       </div>

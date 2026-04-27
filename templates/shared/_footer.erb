@@ -1,10 +1,47 @@
 <footer class="site-footer">
-  <div class="footer-content">
-    <p>Partly Vibecoded with Claude</p>
-    <div class="footer-links">
-      <a href="https://github.com/reverseon" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <span>•</span>
-      <a href="https://github.com/reverseon/personal-website/" target="_blank" rel="noopener noreferrer">Source Code</a>
+  <div class="footer-container">
+    <div class="footer-grid">
+      <!-- Branding -->
+      <div class="footer-section branding">
+        <h3 class="footer-title">ReverseON</h3>
+        <p class="footer-tagline">Building things with code and curiosity.</p>
+      </div>
+
+      <!-- Navigation -->
+      <div class="footer-section links">
+        <h4 class="footer-subtitle">Navigation</h4>
+        <nav class="footer-nav">
+          <a href="/#"><i class="bi bi-house"></i> Home</a>
+          <a href="/posts/1.html"><i class="bi bi-journal-text"></i> Posts</a>
+          <a href="/carriages/1.html"><i class="bi bi-chat-dots"></i> Thoughts</a>
+        </nav>
+      </div>
+
+      <!-- Socials -->
+      <div class="footer-section socials">
+        <h4 class="footer-subtitle">Connect</h4>
+        <div class="social-icons">
+          <a href="https://github.com/reverseon" target="_blank" title="GitHub" rel="noopener noreferrer">
+            <i class="bi bi-github"></i>
+          </a>
+          <a href="https://linkedin.com/in/thirafinajwan" target="_blank" title="LinkedIn" rel="noopener noreferrer">
+            <i class="bi bi-linkedin"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="copyright">
+        <span>&copy; <%= Time.now.year %> ReverseON • Vibecoded with <i class="bi bi-heart-fill pulse"></i> and Claude</span>
+        <span class="footer-separator">•</span>
+        <a href="https://github.com/reverseon/personal-website/" target="_blank" rel="noopener noreferrer" class="footer-source-link">
+          <i class="bi bi-code-slash"></i> Source Code
+        </a>
+      </div>
+      <a href="#" class="back-to-top" title="Back to top">
+        <i class="bi bi-arrow-up-circle"></i>
+      </a>
     </div>
   </div>
 </footer>
