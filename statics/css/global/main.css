@@ -403,6 +403,42 @@ rt {
   }
 }
 
+/* Tooltip styles */
+.tooltip-trigger {
+  text-decoration: underline dotted #58a6ff;
+  text-underline-offset: 4px;
+  cursor: help;
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-box {
+  position: absolute;
+  background: #2d333b;
+  border: 1px solid rgba(139, 148, 158, 0.4);
+  color: #c9d1d9;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  pointer-events: none;
+  max-width: min(400px, 90vw);
+  white-space: normal;
+  overflow-wrap: break-word;
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: var(--font-base);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.tooltip-box--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* Share toast (used by share-btn.js on all pages) */
 .share-toast {
   position: absolute;

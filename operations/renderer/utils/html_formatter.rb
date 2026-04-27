@@ -31,6 +31,13 @@ module HtmlFormatter
       "<aside class=\"footnote\"><span class=\"footnote-label\">Note:</span> #{note_text}</aside>"
     end
 
+    # Tooltip pattern: TOOLTIP{message|target}
+    html = html.gsub(/TOOLTIP\{([^|{}]+)\|([^{}]+)\}/) do |match|
+      message = $1
+      target = $2
+      "<span class=\"tooltip-trigger\" data-tooltip=\"#{message}\">#{target}</span>"
+    end
+
     html
   end
 end

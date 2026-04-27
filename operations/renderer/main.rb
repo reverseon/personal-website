@@ -130,6 +130,7 @@ class Renderer
           });
         </script>
         <script src="/statics/js/global/main.js"></script>
+        <script src="/statics/js/components/tooltip.js"></script>
         #{js_tags}
       </body>
       </html>
