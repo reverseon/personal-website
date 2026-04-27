@@ -114,8 +114,12 @@ body {
   font-family: var(--font-heading);
   font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+}
+
+.nav-link:active {
+  transform: scale(0.97);
 }
 
 .nav-link:hover {
@@ -234,10 +238,14 @@ body {
 .footer-nav a {
   color: #8b949e;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.footer-nav a:active {
+  transform: scale(0.97);
 }
 
 @media (max-width: 768px) {
@@ -287,6 +295,10 @@ body {
   transform: translateY(-4px) scale(1.1);
 }
 
+.social-icons a:active {
+  transform: translateY(-2px) scale(0.97);
+}
+
 .footer-bottom {
   padding-top: 1.5rem;
   border-top: 1px solid rgba(48, 54, 61, 0.3);
@@ -318,7 +330,7 @@ body {
 .footer-source-link {
   color: #58a6ff;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -343,7 +355,7 @@ body {
 .back-to-top {
   color: #8b949e;
   font-size: 1.5rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   display: inline-flex;
 }
@@ -351,6 +363,10 @@ body {
 .back-to-top:hover {
   color: #58a6ff;
   transform: translateY(-2px);
+}
+
+.back-to-top:active {
+  transform: translateY(0) scale(0.97);
 }
 
 /* Hash highlight animation removed */
@@ -364,7 +380,7 @@ rt {
   font-size: 0.6em;
   margin-bottom: 0.2em;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
 }
 
@@ -427,16 +443,25 @@ rt {
   white-space: normal;
   overflow-wrap: break-word;
   opacity: 0;
-  transform: translateX(-50%) translateY(-90%);
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%) translateY(-95%) scale(0.95);
+  transition: 
+    opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: var(--font-base);
   font-weight: 400;
   line-height: 1.4;
+  filter: blur(2px);
 }
 
 .tooltip-box--visible {
   opacity: 1;
-  transform: translateX(-50%) translateY(-100%);
+  transform: translateX(-50%) translateY(-100%) scale(1);
+  filter: blur(0);
+}
+
+.tooltip-box--instant {
+  transition-duration: 0ms !important;
 }
 
 /* Share toast (used by share-btn.js on all pages) */
@@ -453,18 +478,24 @@ rt {
   white-space: nowrap;
   z-index: 9999;
   opacity: 0;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform: translateX(-50%) translateY(5px) scale(0.95);
+  transition: 
+    opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1), 
+    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: blur(2px);
 }
 
 .share-toast--visible {
   opacity: 1;
-  transform: translateX(-50%) translateY(-100%);
+  transform: translateX(-50%) translateY(-100%) scale(1);
+  filter: blur(0);
 }
 
 .share-toast--hidden {
   opacity: 0;
   transform: translateX(-50%) translateY(calc(-100% - 6px));
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Pill-shaped links: never show underline */
@@ -487,7 +518,11 @@ a.pill-link:hover {
   border: 1px solid rgba(139, 148, 158, 0.25) !important;
   border-radius: 20px !important;
   background: rgba(139, 148, 158, 0.07) !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.pill-link:active {
+  transform: scale(0.97) !important;
 }
 
 /* Larger social links in profile */

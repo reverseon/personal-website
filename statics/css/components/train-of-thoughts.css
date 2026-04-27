@@ -92,7 +92,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .share-thought-btn svg {
@@ -107,7 +107,7 @@
 }
 
 .share-thought-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 
 .share-thought-btn.copied {

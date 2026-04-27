@@ -1,5 +1,8 @@
 (function() {
   let activeTooltip = null;
+  let showTimeout = null;
+  let warmStateTimeout = null;
+  let isWarm = false;
 
   function createTooltip() {
     const box = document.createElement('div');
@@ -21,31 +24,33 @@
 
     box.style.left = `${left}px`;
     box.style.top = `${top}px`;
-    // We remove the inline transform and let CSS handle the translateX(-50%) and animations
     box.style.transform = ''; 
 
-    // Boundary detection: check if the tooltip is bleeding out of the viewport
-    // We need to wait for the next frame or force a layout to get the correct boxRect
-    // but since we are centering with translateX(-50%), we can calculate the bounds.
+    // Boundary detection
     const boxWidth = box.offsetWidth;
     const halfWidth = boxWidth / 2;
-    const padding = 15; // Safe margin from edges
+    const padding = 15; 
 
-    // Calculate the left/right position relative to the viewport (not including scroll)
     const viewLeft = rect.left + (rect.width / 2) - halfWidth;
     const viewRight = rect.left + (rect.width / 2) + halfWidth;
 
+    let originX = '50%';
     if (viewLeft < padding) {
-      // Shifting to the right
       const shift = padding - viewLeft;
       left += shift;
+      // Adjust origin to stay over trigger
+      const percentage = 50 - (shift / boxWidth * 100);
+      originX = `${percentage}%`;
     } else if (viewRight > viewportWidth - padding) {
-      // Shifting to the left
       const shift = viewRight - (viewportWidth - padding);
       left -= shift;
+      const percentage = 50 + (shift / boxWidth * 100);
+      originX = `${percentage}%`;
     }
 
     box.style.left = `${left}px`;
+    // Set origin to bottom (since it's above) and dynamic X
+    box.style.transformOrigin = `${originX} bottom`;
   }
 
   function showTooltip(trigger) {
@@ -56,18 +61,42 @@
       activeTooltip = createTooltip();
     }
 
-    activeTooltip.textContent = message;
-    positionTooltip(trigger, activeTooltip);
-    
-    // Force reflow
-    activeTooltip.offsetHeight;
-    activeTooltip.classList.add('tooltip-box--visible');
+    const startShow = () => {
+      activeTooltip.textContent = message;
+      positionTooltip(trigger, activeTooltip);
+      
+      if (isWarm) {
+        activeTooltip.classList.add('tooltip-box--instant');
+      } else {
+        activeTooltip.classList.remove('tooltip-box--instant');
+      }
+
+      // Force reflow
+      activeTooltip.offsetHeight;
+      activeTooltip.classList.add('tooltip-box--visible');
+      isWarm = true;
+      clearTimeout(warmStateTimeout);
+    };
+
+    if (isWarm) {
+      startShow();
+    } else {
+      clearTimeout(showTimeout);
+      showTimeout = setTimeout(startShow, 150);
+    }
   }
 
   function hideTooltip() {
+    clearTimeout(showTimeout);
     if (activeTooltip) {
       activeTooltip.classList.remove('tooltip-box--visible');
     }
+    
+    // Maintain warm state for 500ms after hiding
+    clearTimeout(warmStateTimeout);
+    warmStateTimeout = setTimeout(() => {
+      isWarm = false;
+    }, 500);
   }
 
   document.addEventListener('mouseover', (e) => {
@@ -84,12 +113,8 @@
     }
   });
 
-  // Optional: Update position on scroll if still visible
   window.addEventListener('scroll', () => {
     if (activeTooltip && activeTooltip.classList.contains('tooltip-box--visible')) {
-        // Find the trigger that is currently being hovered
-        // This is a bit tricky with event delegation, but for now we can just hide it on scroll
-        // or let it float. Hiding is safer.
         hideTooltip();
     }
   });
