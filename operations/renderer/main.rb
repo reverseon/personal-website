@@ -76,7 +76,14 @@ class Renderer
 
     footer_html = render_partial('shared/_footer')
 
-    absolute_image = "#{SITE_DOMAIN}#{image}"
+    # Extract first image from content if default image is used
+    if image == '/statics/media/icons/favicon.png'
+      if body_content =~ /<img\s+[^>]*src=["']([^"']+)["']/i
+        image = $1
+      end
+    end
+
+    absolute_image = image.start_with?('http') ? image : "#{SITE_DOMAIN}#{image}"
 
     description_tag = description.empty? ? '' : "<meta name=\"description\" content=\"#{description}\">"
     og_description_tag = description.empty? ? '' : "<meta property=\"og:description\" content=\"#{description}\">"

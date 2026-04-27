@@ -22,7 +22,7 @@ module ProfileRenderer
     render_page(
       body_content,
       title: 'ReverseON - Thirafi Najwan Kurniatama',
-      description: 'Personal blog with my short bio, some notes, and my train of thoughts.',
+      description: 'Personal blog with my short bio, some notes, and my random thoughts.',
       image: '/statics/media/profile.png',
       css_files: [
         '/statics/css/components/profile.css',
