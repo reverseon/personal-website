@@ -2,6 +2,16 @@ console.log("Global scripts loaded.");
 
 // Smooth scroll to hash target on page load with highlight effect
 document.addEventListener('DOMContentLoaded', function() {
+  // Helper for smooth scrolling that avoids conflict with CSS scroll-behavior
+  const safeSmoothScrollTo = (top) => {
+    // If CSS smooth scroll is supported and active on HTML, use 'auto' to avoid conflict/stutter in Firefox
+    const isCssSmoothActive = getComputedStyle(document.documentElement).scrollBehavior === 'smooth';
+    window.scrollTo({
+      top: top,
+      behavior: isCssSmoothActive ? 'auto' : 'smooth'
+    });
+  };
+
   if (window.location.hash) {
     const id = window.location.hash.substring(1);
     const target = document.getElementById(id);
@@ -10,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
       setTimeout(function() {
         const offset = 50;
         const top = target.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top: top, behavior: 'smooth' });
+        safeSmoothScrollTo(top);
       }, 100);
     }
   }
@@ -20,10 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (backToTop) {
     backToTop.addEventListener('click', function(e) {
       e.preventDefault();
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      safeSmoothScrollTo(0);
     });
   }
 });
