@@ -1,7 +1,7 @@
 .app-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   gap: 2rem;
 }
@@ -38,7 +38,7 @@
 @media (max-width: 768px) {
   .app-container {
     flex-direction: column;
-    padding: 1.125rem;
+    padding: 0.75rem;
     gap: 1.5rem;
   }
   .app-sidebar {
@@ -56,7 +56,7 @@
 
 @media (max-width: 480px) {
   .app-container {
-    padding: 0.75rem;
+    padding: 0.5rem;
     gap: 1rem;
   }
   .blog-heading {
