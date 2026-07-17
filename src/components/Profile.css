@@ -58,6 +58,7 @@
   line-height: 1;
   display: inline-block;
   vertical-align: middle;
+  align-self: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
