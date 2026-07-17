@@ -28,6 +28,16 @@
   transform: translateY(0);
 }
 
+@media (max-width: 768px) {
+  .floating-back-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .floating-back-to-top {
     background: #177ddc;
