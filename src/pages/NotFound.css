@@ -13,9 +13,17 @@
 }
 
 .not-found-code {
-  font-size: 3rem;
-  font-weight: bold;
-  margin: 0 0 1rem 0;
+  font-size: 5rem;
+  font-weight: 900;
+  margin: 0 0 1.5rem 0;
+  color: #000;
+  line-height: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .not-found-code {
+    color: #fff;
+  }
 }
 
 .not-found-button {

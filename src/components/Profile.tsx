@@ -1,12 +1,22 @@
+import { useQuery } from '@tanstack/react-query'
 import { SunOutlined, EnvironmentOutlined, DesktopOutlined, GithubOutlined, LinkedinFilled, InstagramOutlined, GlobalOutlined } from '@ant-design/icons'
 import './Profile.css'
 
 export function Profile() {
+  const { data: accountData } = useQuery({
+    queryKey: ['mastodon-account'],
+    queryFn: async () => {
+      const response = await fetch('https://mastodon.social/api/v1/accounts/lookup?acct=kuusourevie')
+      if (!response.ok) throw new Error('Failed to fetch account')
+      return response.json()
+    },
+  })
+
   return (
     <div className="profile-card">
       <div className="profile-header">
         <img
-          src="https://files.mastodon.social/accounts/avatars/116/930/918/690/237/571/original/8cca0cfc61e2f533.png"
+          src={accountData?.avatar || 'https://files.mastodon.social/accounts/avatars/116/930/918/690/237/571/original/8cca0cfc61e2f533.png'}
           alt="Profile picture"
           className="profile-avatar"
         />

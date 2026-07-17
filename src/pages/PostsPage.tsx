@@ -5,12 +5,16 @@ import { Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import jsonp from 'jsonp';
 import { BlogFeed } from '../components/blog/Feed';
+import { Meta } from '../components/Meta';
 import { NotFound } from './NotFound';
 import { FullPageLoader } from './FullPageLoader';
 import { PostsSidebar } from './PostsSidebar';
+import { usePageTitle } from '../hooks/usePageTitle';
+import { metadata } from '../utils/seo';
 import './PostsPage.css';
 
 export const PostsPage = () => {
+  usePageTitle('Posts - ReverseON');
   const { page } = useParams({ from: '/posts/$page' });
   const navigate = useNavigate();
   const currentPage = parseInt(page) || 1;
@@ -93,7 +97,9 @@ export const PostsPage = () => {
 
   // Only render BlogFeed after validation is complete
   return (
-    <div className="posts-page-container">
+    <>
+      <Meta data={metadata.posts} />
+      <div className="posts-page-container">
       <div className="posts-page-header">
         <div className="posts-page-back-wrapper">
           <Button
@@ -125,6 +131,7 @@ export const PostsPage = () => {
           />
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };

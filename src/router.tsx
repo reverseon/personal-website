@@ -7,6 +7,8 @@ import { RootRoute, Route, createRouter } from '@tanstack/react-router';
 
 const rootRoute = new RootRoute({
   component: RootLayout,
+  notFoundComponent: () => <NotFound />,
+  errorComponent: ({ error }) => <NotFound />,
 });
 
 const indexRoute = new Route({
@@ -27,15 +29,12 @@ const postRoute = new Route({
   component: PostPage,
 });
 
-const notFoundRoute = new Route({
-  getParentRoute: () => rootRoute,
-  path: '*',
-  component: NotFound,
+const routeTree = rootRoute.addChildren([indexRoute, postsRoute, postRoute]);
+
+export const router = createRouter({
+  routeTree,
+  notFoundComponent: NotFound,
 });
-
-const routeTree = rootRoute.addChildren([indexRoute, postsRoute, postRoute, notFoundRoute]);
-
-export const router = createRouter({ routeTree });
 
 declare module '@tanstack/react-router' {
   interface Register {

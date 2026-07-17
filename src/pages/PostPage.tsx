@@ -5,6 +5,9 @@ import { FullPageLoader } from './FullPageLoader';
 import { NotFound } from './NotFound';
 import { Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Meta } from '../components/Meta';
+import { usePageTitle } from '../hooks/usePageTitle';
+import { generatePostMetadata } from '../utils/seo';
 import './PostPage.css';
 
 interface BlogPostData {
@@ -70,6 +73,8 @@ export const PostPage = () => {
       }),
   });
 
+  usePageTitle(data?.title ? `${data.title} - ReverseON` : 'Post - ReverseON');
+
   if (isLoading) {
     return <FullPageLoader />;
   }
@@ -78,8 +83,12 @@ export const PostPage = () => {
     return <NotFound />;
   }
 
+  const seoMetadata = generatePostMetadata(data.title, data.content, id);
+
   return (
-    <div className="post-page-container">
+    <>
+      <Meta data={seoMetadata} />
+      <div className="post-page-container">
       <Button
         type="text"
         icon={<ArrowLeftOutlined />}
@@ -112,6 +121,7 @@ export const PostPage = () => {
           className="blog-content"
         />
       </article>
-    </div>
+      </div>
+    </>
   );
 };

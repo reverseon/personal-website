@@ -1,0 +1,39 @@
+.floating-back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: #1890ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.floating-back-to-top:hover {
+  background: #0050b3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+.floating-back-to-top:active {
+  transform: translateY(0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .floating-back-to-top {
+    background: #177ddc;
+  }
+
+  .floating-back-to-top:hover {
+    background: #3c9ae8;
+  }
+}
