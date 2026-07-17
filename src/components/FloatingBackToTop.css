@@ -30,7 +30,7 @@
 
 @media (max-width: 768px) {
   .floating-back-to-top {
-    bottom: 4rem;
+    bottom: 2rem;
     right: 1rem;
     width: 3rem;
     height: 3rem;
