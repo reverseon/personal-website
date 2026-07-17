@@ -48,6 +48,7 @@
   display: flex;
   gap: 0.75rem;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .profile-info-row svg {
@@ -56,15 +57,13 @@
   height: 1.2rem;
   flex-shrink: 0;
   line-height: 1;
-  display: inline-block;
-  vertical-align: middle;
-  align-self: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .profile-info-row span {
   font-size: 0.9rem;
+  max-width: 70%;
 }
 
 .profile-info-row span.small-text {
