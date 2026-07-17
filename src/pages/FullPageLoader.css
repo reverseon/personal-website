@@ -1,0 +1,11 @@
+.full-page-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.full-page-loader-skeleton {
+  width: 100%;
+  max-width: 600px;
+}

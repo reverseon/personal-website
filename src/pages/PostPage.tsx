@@ -79,50 +79,36 @@ export const PostPage = () => {
   }
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '2rem 1rem' }}>
+    <div className="post-page-container">
       <Button
         type="text"
         icon={<ArrowLeftOutlined />}
         onClick={() => window.history.back()}
-        style={{ height: '40px', padding: 0, margin: 0, marginBottom: '2rem', fontSize: '1rem' }}
+        className="post-page-back-button"
       >
         Back
       </Button>
 
       <article>
-        <h1>{data.title}</h1>
-        <p style={{ color: '#666', fontSize: '0.875rem', marginBottom: '2rem' }}>
+        <h1 className="post-page-title">{data.title}</h1>
+        <p className="post-page-meta">
           Published: {new Date(data.published).toLocaleDateString()}
           {data.author && ` by ${data.author}`}
         </p>
 
-        <div style={{ marginBottom: '2rem' }}>
+        <div className="post-page-categories">
           {data.categories.map((cat) => (
             <span
               key={cat}
-              style={{
-                display: 'inline-block',
-                backgroundColor: '#f0f0f0',
-                padding: '0.25rem 0.75rem',
-                borderRadius: '4px',
-                marginRight: '0.5rem',
-                marginBottom: '0.5rem',
-                fontSize: '0.875rem',
-              }}
+              className="post-page-category-tag"
             >
               {cat}
             </span>
           ))}
         </div>
 
-        {/* Rendered content */}
         <div
           dangerouslySetInnerHTML={{ __html: data.content }}
-          style={{
-            lineHeight: 1.8,
-            fontSize: '1rem',
-            color: '#333',
-          }}
           className="blog-content"
         />
       </article>

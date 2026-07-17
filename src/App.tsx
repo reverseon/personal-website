@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { Profile } from './components/Profile'
 import { MastodonFeed } from './components/MastodonFeed'
 import { BlogFeed } from './components/blog/Feed'
+import './App.css'
 
 function App() {
   const navigate = useNavigate()
@@ -11,15 +12,17 @@ function App() {
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1rem 1rem', display: 'flex', gap: '2rem' }}>
-      <div style={{ flex: '0 0 300px', position: 'sticky', top: '1rem', height: 'fit-content' }}>
+    <div className="app-container">
+      <div className="app-sidebar">
         <Profile />
       </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div className="app-main">
         <MastodonFeed />
-        <div style={{ marginTop: '2rem' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1.5rem', borderBottom: '2px solid #1890ff', paddingBottom: '0.5rem', display: 'inline-block' }}>Blog Posts</h2>
-          <div style={{ marginTop: '1rem' }}>
+        <div className="blog-section">
+          <h2 className="blog-heading">
+            Blog Posts
+          </h2>
+          <div className="blog-feed-list">
             <BlogFeed maxResults={3} currentPage={1} onPageChange={handlePageChange} />
           </div>
         </div>

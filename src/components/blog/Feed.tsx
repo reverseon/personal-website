@@ -3,6 +3,7 @@ import { Card, Skeleton, Empty, Space, Button, Row, Col, Tag } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from '@tanstack/react-router';
 import jsonp from 'jsonp';
+import './Feed.css';
 
 interface BlogPost {
   id: string;
@@ -11,7 +12,6 @@ interface BlogPost {
   subheading?: string;
   link: string;
   published: string;
-  commentCount?: number;
   categories?: string[];
 }
 
@@ -75,7 +75,6 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
               subheading: extractFirstBlockquote(entry.content.$t),
               link: entry.link.find((l: any) => l.rel === 'alternate')?.href,
               published: entry.published.$t,
-              commentCount: parseInt(entry['thr$total']?.$t || '0'),
               categories: entry.category
                 ?.filter((c: any) => c.term && c.term !== 'http://schemas.google.com/blogger/2008/kind#post')
                 .map((c: any) => c.term) || [],
@@ -113,7 +112,6 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
               subheading: extractFirstBlockquote(entry.content.$t),
               link: entry.link.find((l: any) => l.rel === 'alternate')?.href,
               published: entry.published.$t,
-              commentCount: parseInt(entry['thr$total']?.$t || '0'),
               categories: entry.category
                 ?.filter((c: any) => c.term && c.term !== 'http://schemas.google.com/blogger/2008/kind#post')
                 .map((c: any) => c.term) || [],
@@ -142,8 +140,8 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
   if (isLoading) {
     if (isStandalone) {
       return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
-          <Skeleton active style={{ width: '100%', maxWidth: '600px' }} />
+        <div className="blog-feed-loading">
+          <Skeleton active className="blog-feed-loading-skeleton" />
         </div>
       );
     }
@@ -155,47 +153,29 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
   const hasNextPage = startIndex + maxResults - 1 < totalResults;
 
   return (
-    <Space direction="vertical" style={{ width: '100%' }} size="large">
+    <Space direction="vertical" className="blog-feed-list" size="large">
       {!displayPosts?.length ? (
         <Empty description="No posts found" />
       ) : (
         displayPosts.map((post) => (
         <div
           key={post.id}
+          className="blog-post-card"
           onClick={() => {
             const slug = extractSlugFromLink(post.link);
             navigate({ to: '/post/$id', params: { id: slug } });
           }}
-          style={{
-            display: 'flex',
-            border: '1px solid #f0f0f0',
-            borderRadius: '8px',
-            overflow: 'hidden',
-            cursor: 'pointer',
-            transition: 'all 0.3s',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-            e.currentTarget.style.borderColor = '#d9d9d9';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = 'none';
-            e.currentTarget.style.borderColor = '#f0f0f0';
-          }}
         >
-          <div style={{ flex: 1, minWidth: 0, padding: '1rem' }}>
-            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem' }}>
+          <div className="blog-post-content">
+            <h3 className="blog-post-title">
               {post.title}
             </h3>
-            <p style={{ margin: '0 0 0.5rem 0', color: '#666', fontSize: '0.875rem' }}>
+            <p className="blog-post-subheading">
               {post.subheading}
             </p>
-            <p style={{ margin: '0 0 0.75rem 0', color: '#999', fontSize: '0.75rem' }}>
-              {post.commentCount} comment{post.commentCount !== 1 ? 's' : ''}
-            </p>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div className="blog-post-tags">
               {post.categories?.map((category) => (
-                <Tag key={category} style={{ cursor: 'pointer', marginBottom: '0.25rem' }}>
+                <Tag key={category} className="blog-post-tag">
                   {category}
                 </Tag>
               ))}
@@ -205,18 +185,13 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
             <img
               alt={post.title}
               src={post.thumbnail}
-              style={{
-                width: '150px',
-                height: '150px',
-                objectFit: 'cover',
-                flexShrink: 0,
-              }}
+              className="blog-post-thumbnail"
             />
           )}
         </div>
       )))}
       {!isSearchMode && (
-        <Row justify="space-between" align="middle" style={{ marginTop: '1rem' }}>
+        <Row justify="space-between" align="middle" className="blog-feed-pagination">
           {!isStandalone && <Col />}
           {isStandalone && (
             <>
@@ -230,7 +205,7 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
                 </Button>
               </Col>
               <Col>
-                <span style={{ color: '#666', fontSize: '0.875rem' }}>
+                <span className="blog-feed-page-label">
                   Page {currentPage}
                 </span>
               </Col>

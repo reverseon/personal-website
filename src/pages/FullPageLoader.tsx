@@ -1,9 +1,10 @@
 import { Skeleton } from 'antd';
+import './FullPageLoader.css';
 
 export const FullPageLoader = () => {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
-      <Skeleton active style={{ width: '100%', maxWidth: '600px' }} />
+    <div className="full-page-loader">
+      <Skeleton active className="full-page-loader-skeleton" />
     </div>
   );
 };
