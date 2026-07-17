@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { SunOutlined, EnvironmentOutlined, CodeOutlined, GithubOutlined, LinkedinFilled, InstagramOutlined, GlobalOutlined } from '@ant-design/icons'
+import { SunOutlined, EnvironmentOutlined, GithubOutlined, LinkedinFilled, InstagramOutlined, GlobalOutlined } from '@ant-design/icons'
 import './Profile.css'
 
 export function Profile() {
@@ -46,7 +46,7 @@ export function Profile() {
         </div>
 
         <div className="profile-info-row">
-          <CodeOutlined />
+          <EnvironmentOutlined />
           <span className="small-text">Low-level programming and distributed systems while orchestrating LLM in between.</span>
         </div>
 
