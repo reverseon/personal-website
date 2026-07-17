@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Card, Skeleton, Empty, Space, Button, Row, Col, Tag } from 'antd';
+import { Skeleton, Empty, Space, Button, Row, Col, Tag } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from '@tanstack/react-router';
 import jsonp from 'jsonp';
@@ -55,14 +55,14 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
   const navigate = useNavigate();
   const startIndex = (currentPage - 1) * maxResults + 1;
 
-  const { data, isLoading, error } = useQuery<FeedData>({
+  const { data, isLoading } = useQuery<FeedData>({
     queryKey: ['blogger-feed', maxResults, currentPage],
     queryFn: () =>
       new Promise((resolve, reject) => {
         jsonp(
           `https://revierandomnotes.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=${maxResults}&start-index=${startIndex}`,
           { param: 'callback' },
-          (err, data) => {
+          (err: Error | null, data: any) => {
             if (err) {
               reject(err);
               return;
@@ -92,14 +92,14 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
   const totalResults = data?.totalResults || 0;
 
   // For search mode, we need to fetch all posts
-  const { data: allPostsData, isLoading: allPostsLoading } = useQuery({
+  const { data: allPostsData } = useQuery({
     queryKey: ['blogger-feed-search-all'],
     queryFn: () =>
       new Promise<BlogPost[]>((resolve, reject) => {
         jsonp(
           `https://revierandomnotes.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=9999`,
           { param: 'callback' },
-          (err, data) => {
+          (err: Error | null, data: any) => {
             if (err) {
               reject(err);
               return;

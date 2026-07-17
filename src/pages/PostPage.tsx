@@ -24,7 +24,7 @@ interface BlogPostData {
 export const PostPage = () => {
   const { id } = useParams({ from: '/post/$id' });
 
-  const { data, isLoading, error } = useQuery<BlogPostData | null>({
+  const { data, isLoading } = useQuery<BlogPostData | null>({
     queryKey: ['blogger-post', id],
     queryFn: () =>
       new Promise((resolve, reject) => {
@@ -32,7 +32,7 @@ export const PostPage = () => {
         jsonp(
           'https://revierandomnotes.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=9999',
           { param: 'callback' },
-          (err, data) => {
+          (err: Error | null, data: any) => {
             if (err) {
               reject(err);
               return;
