@@ -19,4 +19,20 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'JSXAttribute[name.name="style"]',
+          message: 'Inline style prop is forbidden. Create a class in a colocated .css file and use className instead.',
+        },
+        {
+          selector: 'AssignmentExpression[left.object.property.name="style"]',
+          message: 'Inline style mutation is forbidden. Use a CSS class with :hover or other pseudo-classes instead.',
+        },
+      ],
+    },
+  },
 ])

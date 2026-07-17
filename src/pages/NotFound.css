@@ -1,0 +1,31 @@
+.not-found-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.not-found-content {
+  text-align: center;
+}
+
+.not-found-code {
+  font-size: 5rem;
+  font-weight: 900;
+  margin: 0 0 1.5rem 0;
+  color: #000;
+  line-height: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .not-found-code {
+    color: #fff;
+  }
+}
+
+.not-found-button {
+  margin-top: 2rem;
+}

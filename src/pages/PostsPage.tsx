@@ -5,11 +5,16 @@ import { Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import jsonp from 'jsonp';
 import { BlogFeed } from '../components/blog/Feed';
+import { Meta } from '../components/Meta';
 import { NotFound } from './NotFound';
 import { FullPageLoader } from './FullPageLoader';
 import { PostsSidebar } from './PostsSidebar';
+import { usePageTitle } from '../hooks/usePageTitle';
+import { metadata } from '../utils/seo';
+import './PostsPage.css';
 
 export const PostsPage = () => {
+  usePageTitle('Posts - ReverseON');
   const { page } = useParams({ from: '/posts/$page' });
   const navigate = useNavigate();
   const currentPage = parseInt(page) || 1;
@@ -92,38 +97,41 @@ export const PostsPage = () => {
 
   // Only render BlogFeed after validation is complete
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1rem' }}>
-      <div style={{ display: 'flex', gap: '2rem', marginBottom: '1rem' }}>
-        <div style={{ flex: '0 0 250px' }}>
+    <>
+      <Meta data={metadata.posts} />
+      <div className="posts-page-container">
+      <div className="posts-page-header">
+        <div className="posts-page-back-wrapper">
           <Button
             type="text"
             icon={<ArrowLeftOutlined />}
             onClick={() => window.history.back()}
-            style={{ height: '40px', padding: 0, margin: 0, fontSize: '1rem' }}
+            className="posts-page-back-button"
           >
             Back
           </Button>
         </div>
       </div>
-      <div style={{ display: 'flex', gap: '2rem' }}>
-      <div style={{ flex: '0 0 250px' }}>
-        <PostsSidebar
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          categories={categories}
-          tags={tags}
-        />
+      <div className="posts-page-layout">
+        <div className="posts-page-sidebar">
+          <PostsSidebar
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            categories={categories}
+            tags={tags}
+          />
+        </div>
+        <div className="posts-page-content">
+          <BlogFeed
+            maxResults={5}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            isStandalone
+            searchQuery={searchQuery}
+          />
+        </div>
       </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <BlogFeed
-          maxResults={5}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-          isStandalone
-          searchQuery={searchQuery}
-        />
       </div>
-      </div>
-    </div>
+    </>
   );
 };

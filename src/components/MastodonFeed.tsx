@@ -1,12 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
 import { Spin, Empty, Alert, Typography, Modal } from 'antd'
 import { useState } from 'react'
+import './MastodonFeed.css'
 
 const { Text } = Typography
 
+function getImageGridClass(count: number): string {
+  if (count === 1) return 'mastodon-item-images--1'
+  if (count === 2) return 'mastodon-item-images--2'
+  if (count === 3) return 'mastodon-item-images--3'
+  if (count === 4) return 'mastodon-item-images--4'
+  return 'mastodon-item-images--5plus'
+}
+
 export function MastodonFeed() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const [linkHover, setLinkHover] = useState(false)
   const { data: xmlData, isLoading, error } = useQuery({
     queryKey: ['mastodon-rss'],
     queryFn: async () => {
@@ -49,7 +57,7 @@ export function MastodonFeed() {
   return (
     <>
       {isLoading && (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
+        <div className="mastodon-loading">
           <Spin />
         </div>
       )}
@@ -60,75 +68,34 @@ export function MastodonFeed() {
           description={error.message}
           type="error"
           showIcon
-          style={{ marginBottom: '1rem' }}
+          className="mastodon-error"
         />
       )}
 
       {parsedFeed && (
-        <div style={{ position: 'relative', paddingLeft: '2rem', paddingTop: '1.5rem' }}>
-          <div
-            style={{
-              position: 'absolute',
-              left: '0.5rem',
-              top: 0,
-              bottom: 0,
-              width: '2px',
-              backgroundColor: '#d9d9d9',
-            }}
-          />
+        <div className="mastodon-feed">
+          <div className="mastodon-timeline-line" />
           {parsedFeed.items.slice(0, 5).map((item, idx) => (
-            <div key={idx} style={{ marginBottom: '1rem', position: 'relative' }}>
-              <div
-                style={{
-                  position: 'absolute',
-                  left: '-1.65rem',
-                  top: '0.5rem',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  backgroundColor: '#1890ff',
-                  border: '2px solid #fff',
-                  boxShadow: '0 0 0 2px #d9d9d9',
-                }}
-              />
+            <div key={idx} className="mastodon-item">
+              <div className="mastodon-item-dot" />
               {item.images.length > 0 && (
-                <div
-                  style={{
-                    marginBottom: '0.5rem',
-                    display: 'grid',
-                    gridTemplateColumns:
-                      item.images.length === 1 ? '1fr' :
-                      item.images.length === 2 ? 'repeat(2, 1fr)' :
-                      item.images.length === 3 ? 'repeat(3, 1fr)' :
-                      item.images.length === 4 ? 'repeat(2, 1fr)' :
-                      'repeat(3, 1fr)',
-                    gap: '4px',
-                    borderRadius: '6px',
-                    overflow: 'hidden',
-                  }}
-                >
+                <div className={`mastodon-item-images ${getImageGridClass(item.images.length)}`}>
                   {item.images.map((image, imgIdx) => (
                     <img
                       key={imgIdx}
                       src={image}
                       alt=""
                       onClick={() => setSelectedImage(image)}
-                      style={{
-                        width: '100%',
-                        height: '250px',
-                        objectFit: 'cover',
-                        display: 'block',
-                        cursor: 'pointer',
-                      }}
+                      className="mastodon-item-image"
                     />
                   ))}
                 </div>
               )}
               <div
-                style={{ marginBottom: '0.2rem', lineHeight: '1.6', fontSize: '0.9rem' }}
+                className="mastodon-item-title"
                 dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(item.title) }}
               />
-              <Text type="secondary" style={{ fontSize: '0.85rem', display: 'block', textAlign: 'right' }}>
+              <Text type="secondary" className="mastodon-item-date">
                 {new Date(item.pubDate).toLocaleString(undefined, {
                   year: 'numeric',
                   month: '2-digit',
@@ -139,20 +106,13 @@ export function MastodonFeed() {
               </Text>
             </div>
           ))}
-          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-            <Text type="secondary" style={{ fontSize: '0.85rem' }}>
+          <div className="mastodon-footer">
+            <Text type="secondary">
               <a
                 href="https://mastodon.social/@kuusourevie"
                 target="_blank"
                 rel="noopener noreferrer"
-                onMouseEnter={() => setLinkHover(true)}
-                onMouseLeave={() => setLinkHover(false)}
-                style={{
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  textDecoration: linkHover ? 'underline' : 'none',
-                  transition: 'all 0.2s'
-                }}
+                className="mastodon-footer-link"
               >
                 See more at @kuusourevie@mastodon.social
               </a>
@@ -168,10 +128,9 @@ export function MastodonFeed() {
         onCancel={() => setSelectedImage(null)}
         footer={null}
         width="auto"
-        style={{ maxWidth: '90vw' }}
       >
         {selectedImage && (
-          <img src={selectedImage} alt="" style={{ width: '100%', borderRadius: '6px' }} />
+          <img src={selectedImage} alt="" className="mastodon-modal-image" />
         )}
       </Modal>
     </>

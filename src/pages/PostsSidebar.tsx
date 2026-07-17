@@ -1,5 +1,6 @@
 import { Input, Tag, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import './PostsSidebar.css';
 
 interface PostsSidebarProps {
   searchQuery: string;
@@ -19,34 +20,27 @@ export const PostsSidebar = ({
   onTagClick,
 }: PostsSidebarProps) => {
   return (
-    <div style={{ position: 'sticky', top: '1rem', height: 'fit-content' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem' }}>Search</h3>
+    <div className="sidebar-sticky">
+      <div className="sidebar-section">
+        <h3 className="sidebar-title">Search</h3>
         <Input
           placeholder="Search posts..."
           prefix={<SearchOutlined />}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          style={{ marginBottom: '1rem' }}
+          className="sidebar-search-input"
         />
       </div>
 
       {categories.length > 0 && (
-        <div style={{ marginBottom: '2rem' }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem' }}>Categories</h3>
-          <Space direction="vertical" style={{ width: '100%' }} size="small">
+        <div className="sidebar-section">
+          <h3 className="sidebar-title">Categories</h3>
+          <Space direction="vertical" className="sidebar-categories-list" size="small">
             {categories.map((category) => (
               <div
                 key={category}
                 onClick={() => onSearchChange(category)}
-                style={{
-                  cursor: 'pointer',
-                  padding: '0.5rem',
-                  borderRadius: '4px',
-                  transition: 'background 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#f0f0f0')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                className="sidebar-category-item"
               >
                 {category}
               </div>
@@ -56,14 +50,14 @@ export const PostsSidebar = ({
       )}
 
       {tags.length > 0 && (
-        <div>
-          <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem' }}>Tags</h3>
+        <div className="sidebar-section">
+          <h3 className="sidebar-title">Tags</h3>
           <Space wrap>
             {tags.map((tag) => (
               <Tag
                 key={tag}
                 onClick={() => onTagClick?.(tag)}
-                style={{ cursor: 'pointer' }}
+                className="sidebar-tag"
               >
                 {tag}
               </Tag>

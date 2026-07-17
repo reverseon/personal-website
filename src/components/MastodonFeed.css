@@ -1,0 +1,114 @@
+.mastodon-loading {
+  text-align: center;
+  padding: 2rem;
+}
+
+.mastodon-error {
+  margin-bottom: 1rem;
+}
+
+.mastodon-feed {
+  position: relative;
+  padding-left: 2rem;
+  padding-top: 1.5rem;
+}
+
+.mastodon-timeline-line {
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #d9d9d9;
+}
+
+.mastodon-item {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.mastodon-item-dot {
+  position: absolute;
+  left: -1.65rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #1890ff;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #d9d9d9;
+}
+
+.mastodon-item-images {
+  margin-bottom: 0.5rem;
+  display: grid;
+  gap: 4px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.mastodon-item-images--1 {
+  grid-template-columns: 1fr;
+}
+
+.mastodon-item-images--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.mastodon-item-images--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.mastodon-item-images--4 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.mastodon-item-images--5plus {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.mastodon-item-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+}
+
+.mastodon-item-title {
+  margin-bottom: 0.2rem;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.mastodon-item-date {
+  font-size: 0.85rem;
+  display: block;
+  text-align: right;
+}
+
+.mastodon-footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.mastodon-footer-link {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.mastodon-footer-link:hover {
+  text-decoration: underline;
+}
+
+.mastodon-modal {
+  max-width: 90vw;
+}
+
+.mastodon-modal-image {
+  width: 100%;
+  border-radius: 6px;
+}

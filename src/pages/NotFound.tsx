@@ -1,32 +1,30 @@
 import { Empty, Button } from 'antd';
 import { useNavigate } from '@tanstack/react-router';
+import { Meta } from '../components/Meta';
+import { usePageTitle } from '../hooks/usePageTitle';
+import { metadata } from '../utils/seo';
+import './NotFound.css';
 
 export const NotFound = () => {
+  usePageTitle('Not Found - ReverseON');
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '4rem 1rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '60vh',
-      }}
-    >
-      <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '3rem', fontWeight: 'bold', margin: '0 0 1rem 0' }}>404</h1>
-        <Empty description="Page not found" />
-        <Button
-          type="primary"
-          onClick={() => navigate({ to: '/' })}
-          style={{ marginTop: '2rem' }}
-        >
-          Go to homepage
-        </Button>
+    <>
+      <Meta data={metadata.notFound} />
+      <div className="not-found-container">
+        <div className="not-found-content">
+          <h1 className="not-found-code">404</h1>
+          <Empty description="Page not found" />
+          <Button
+            type="primary"
+            onClick={() => navigate({ to: '/' })}
+            className="not-found-button"
+          >
+            Go to homepage
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
