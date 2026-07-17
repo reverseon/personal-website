@@ -28,7 +28,7 @@ export const PostsPage = () => {
         jsonp(
           'https://revierandomnotes.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=1',
           { param: 'callback' },
-          (err, data) => {
+          (err: Error | null, data: any) => {
             if (err) {
               reject(err);
               return;
@@ -48,7 +48,7 @@ export const PostsPage = () => {
         jsonp(
           'https://revierandomnotes.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=9999',
           { param: 'callback' },
-          (err, data) => {
+          (err: Error | null, data: any) => {
             if (err) {
               reject(err);
               return;

@@ -7,8 +7,7 @@ import { RootRoute, Route, createRouter } from '@tanstack/react-router';
 
 const rootRoute = new RootRoute({
   component: RootLayout,
-  notFoundComponent: () => <NotFound />,
-  errorComponent: ({ error }) => <NotFound />,
+  errorComponent: () => <NotFound />,
 });
 
 const indexRoute = new Route({
@@ -33,7 +32,6 @@ const routeTree = rootRoute.addChildren([indexRoute, postsRoute, postRoute]);
 
 export const router = createRouter({
   routeTree,
-  notFoundComponent: NotFound,
 });
 
 declare module '@tanstack/react-router' {

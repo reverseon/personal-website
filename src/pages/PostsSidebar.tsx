@@ -7,7 +7,6 @@ interface PostsSidebarProps {
   onSearchChange: (query: string) => void;
   categories: string[];
   tags: string[];
-  onCategoryClick?: (category: string) => void;
   onTagClick?: (tag: string) => void;
 }
 
@@ -16,7 +15,6 @@ export const PostsSidebar = ({
   onSearchChange,
   categories,
   tags,
-  onCategoryClick,
   onTagClick,
 }: PostsSidebarProps) => {
   return (

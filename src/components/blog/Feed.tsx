@@ -148,8 +148,6 @@ export const BlogFeed = ({ maxResults = 5, currentPage = 1, onPageChange, isStan
     return <Skeleton active />;
   }
 
-  if (error) return <Empty description="Failed to load blog posts" />;
-
   const hasNextPage = startIndex + maxResults - 1 < totalResults;
 
   return (
