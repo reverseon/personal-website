@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Meta } from '../components/Meta';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useSmartBackNavigation } from '../hooks/useSmartBackNavigation';
 import { generatePostMetadata } from '../utils/seo';
 import './PostPage.css';
 
@@ -23,6 +24,7 @@ interface BlogPostData {
 
 export const PostPage = () => {
   const { id } = useParams({ from: '/post/$id' });
+  const handleBack = useSmartBackNavigation();
 
   const { data, isLoading } = useQuery<BlogPostData | null>({
     queryKey: ['blogger-post', id],
@@ -92,7 +94,7 @@ export const PostPage = () => {
       <Button
         type="text"
         icon={<ArrowLeftOutlined />}
-        onClick={() => window.history.back()}
+        onClick={handleBack}
         className="post-page-back-button"
       >
         Back
