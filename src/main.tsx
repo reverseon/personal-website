@@ -7,16 +7,21 @@ import './index.css'
 
 const queryClient = new QueryClient()
 
-if (sessionStorage.redirect) {
-  const redirect = sessionStorage.redirect
-  delete sessionStorage.redirect
-  window.location.href = redirect
-} else {
-  createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </StrictMode>,
-  )
+const params = new URLSearchParams(window.location.search)
+const redirectPath = params.get('_redirect')
+
+const root = createRoot(document.getElementById('root')!)
+
+root.render(
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </StrictMode>,
+)
+
+if (redirectPath) {
+  router.navigate({ to: redirectPath }).catch(() => {
+    window.history.replaceState(null, '', '/')
+  })
 }
