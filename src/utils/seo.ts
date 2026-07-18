@@ -33,7 +33,7 @@ export const getMastodonProfileImage = async (): Promise<string> => {
   }
 
   // Fallback to default
-  return `${SITE_URL}/src/assets/og-img/default.jpg`;
+  return `${SITE_URL}/og-img/default.jpg`;
 };
 
 export interface MetaData {
@@ -45,32 +45,32 @@ export interface MetaData {
 }
 
 export const getOgImagePath = (slug?: string): string => {
-  if (!slug) return `${SITE_URL}/src/assets/og-img/default.jpg`;
+  if (!slug) return `${SITE_URL}/og-img/default.jpg`;
 
   // Try to match slug to image file
   const imageFile = slug.toLowerCase().replace(/[\s_]+/g, '-');
-  return `${SITE_URL}/src/assets/og-img/${imageFile}.jpg`;
+  return `${SITE_URL}/og-img/${imageFile}.jpg`;
 };
 
 export const metadata = {
   home: {
     title: 'ReverseON - Thirafi Najwan',
     description: 'where code meets chaos, thoughts become posts, and random experiments happen',
-    image: `${SITE_URL}/src/assets/og-img/home.jpg`,
+    image: `${SITE_URL}/og-img/home.jpg`,
     url: SITE_URL,
     type: 'website' as const,
   },
   posts: {
     title: 'Blog Posts',
     description: 'Explore a collection of technical articles and random notes on development, technology, and experiments.',
-    image: `${SITE_URL}/src/assets/og-img/default.jpg`,
+    image: `${SITE_URL}/og-img/default.jpg`,
     url: `${SITE_URL}/posts/1`,
     type: 'website' as const,
   },
   notFound: {
     title: 'Page Not Found',
     description: 'The page you are looking for does not exist.',
-    image: `${SITE_URL}/src/assets/og-img/default.jpg`,
+    image: `${SITE_URL}/og-img/default.jpg`,
     url: SITE_URL,
     type: 'website' as const,
   },
@@ -102,7 +102,7 @@ export const generatePostMetadata = (
   }
 
   // Extract first image from content, fallback to default
-  let image = `${SITE_URL}/src/assets/og-img/default.jpg`;
+  let image = `${SITE_URL}/og-img/default.jpg`;
   const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
   if (imgMatch) {
     image = imgMatch[1];
