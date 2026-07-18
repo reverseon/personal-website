@@ -7,10 +7,16 @@ import './index.css'
 
 const queryClient = new QueryClient()
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  </StrictMode>,
-)
+if (sessionStorage.redirect) {
+  const redirect = sessionStorage.redirect
+  delete sessionStorage.redirect
+  window.location.href = redirect
+} else {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </StrictMode>,
+  )
+}
